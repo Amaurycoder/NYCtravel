@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NYC Street Photo Itinerary - 2026 Edition</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <!-- Google Fonts (Plus Jakarta Sans for a modern tech feel) -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Phosphor Icons -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #050505;
+      color: #ffffff;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    /* --- 2026 Glassmorphism Utilities --- */
+    .glass-panel {
+      background: rgba(20, 20, 25, 0.45);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .glass-pill {
+      background: rgba(30, 30, 35, 0.5);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .iridescent-text {
+      background: linear-gradient(135deg, #a8c0ff 0%, #3f2b96 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .iridescent-bg {
+      background: linear-gradient(135deg, #a8c0ff 0%, #3f2b96 100%);
+    }
+
+    /* Hide scrollbars for ultra-clean look */
+    ::-webkit-scrollbar {
+      display: none;
+    }
+
+    * {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* --- Map Adjustments --- */
+    #map {
+      width: 100vw;
+      height: 100vh;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    .leaflet-layer,
+    .leaflet-control-attribution {
+      filter: grayscale(100%) invert(100%) hue-rotate(180deg) brightness(85%) contrast(120%);
+    }
+
+    /* Glassmorphic Leaflet Popups */
+    .leaflet-popup-content-wrapper {
+      background: rgba(20, 20, 25, 0.6) !important;
+      backdrop-filter: blur(16px) !important;
+      -webkit-backdrop-filter: blur(16px) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      color: white !important;
+      border-radius: 16px !important;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5) !important;
+    }
+
+    .leaflet-popup-tip {
+      background: rgba(20, 20, 25, 0.6) !important;
+      backdrop-filter: blur(16px) !important;
+    }
+
+    .leaflet-popup-content {
+      margin: 16px !important;
+    }
+
+    .leaflet-popup-close-button {
+      color: rgba(255, 255, 255, 0.5) !important;
+    }
+
+    /* Timeline connecting line */
+    .timeline-track {
+      position: absolute;
+      left: 23px;
+      top: 40px;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 100%);
+      z-index: -1;
+    }
+
+    /* Marker Numbering */
+    .marker-number {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #fff;
+      color: #000;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 1px 5px;
+      border-radius: 4px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      border: 1px solid #000;
+    }
+  </style>
+</head>
+
+<body class="relative text-sm text-gray-200">
+
+  <!-- The Map (Full Screen) -->
+  <div id="map"></div>
+
+  <!-- UI Overlay container -->
+  <div class="absolute inset-0 z-10 pointer-events-none p-4 md:p-8 flex flex-col justify-between">
+
+    <!-- Top Section (Header & Info Panel) -->
+    <div class="flex flex-col gap-6 md:w-96 max-h-[80vh]">
+
+      <!-- Floating Header -->
+      <header class="glass-panel rounded-2xl p-5 pointer-events-auto transition-transform hover:scale-[1.01]">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-full iridescent-bg flex items-center justify-center shadow-lg">
+            <i class="ph ph-aperture text-2xl text-white"></i>
+          </div>
+          <div>
+            <h1 class="text-xl font-bold tracking-tight text-white">NYC Focus</h1>
+            <p class="text-xs text-white/50 font-medium">Street Photography 2026</p>
+          </div>
+        </div>
+      </header>
+
+      <!-- Floating Timeline Panel -->
+      <div
+        class="glass-panel rounded-3xl flex-1 flex flex-col overflow-hidden pointer-events-auto opacity-0 translate-y-4 transition-all duration-700 ease-out"
+        id="day-panel">
+
+        <!-- Day Hero -->
+        <div class="p-6 pb-4 border-b border-white/5 relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-32 h-32 iridescent-bg opacity-20 blur-3xl rounded-full -mr-10 -mt-10">
+          </div>
+          <span class="text-xs font-bold uppercase tracking-widest text-indigo-300 mb-2 block" id="day-date">Date</span>
+          <h2 class="text-2xl font-bold text-white mb-2 leading-tight" id="day-title">Titre</h2>
+          <p class="text-sm text-white/60 font-light leading-relaxed" id="day-desc">Description</p>
+        </div>
+
+        <!-- Steps List -->
+        <div class="p-6 overflow-y-auto flex-1 relative" id="timeline-list">
+          <!-- Injected by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Section (Day Picker Pill) -->
+    <div class="w-full flex justify-center pointer-events-auto pb-4 md:pb-0">
+      <nav class="glass-pill rounded-full p-2 flex gap-1 overflow-x-auto max-w-[95vw] shadow-2xl items-center"
+        id="day-selector">
+        <!-- Injected by JS -->
+      </nav>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    // --- DATA ---
+    const itinerary = [
+      {
+        day: 1, date: "Samedi 25 Avril", title: "L'Immersion et le Choc des Néons",
+        desc: "L'arrivée nocturne est une opportunité idéale pour se familiariser avec l'esthétique électrique de la ville.",
+        points: [
+          { time: "19:15", type: "Atterrissage", location: "Aéroport EWR", desc: "Douanes, récupération des bagages.", coords: [40.6895, -74.1745] },
+          { time: "20:15", type: "Transit", location: "NJ Transit / Ligne 1", desc: "Trajet vers Penn Station, puis ligne 1.", coords: [40.7505, -73.9934] },
+          { time: "21:30", type: "Check-in", location: "HI NYC Hostel", desc: "Dépôt équipement. Garder un objectif lumineux (f/1.8).", coords: [40.7985, -73.9682] },
+          { time: "22:00", type: "Dîner", location: "Taqueria y Fonda", desc: "Plats massifs pour caler un estomac après le vol.", coords: [40.8015, -73.9655] },
+          { time: "23:00", type: "Street Photo", location: "Broadway (UWS)", desc: "Rechercher les Bodegas. ISO 3200/6400, sous-exposer.", coords: [40.8000, -73.9680] },
+          { time: "00:30", type: "Repos", location: "HI NYC Hostel", desc: "Retour pour le réveil matinal.", coords: [40.7985, -73.9682] }
+        ]
+      },
+      {
+        day: 2, date: "Dimanche 26 Avril", title: "Acier, Béton et Brooklyn",
+        desc: "Le décalage horaire garantit un réveil à l'aube. C'est ton avantage tactique.",
+        points: [
+          { time: "05:30", type: "Transit", location: "High Street", desc: "Transfert A/C vers Brooklyn.", coords: [40.6993, -73.9904] },
+          { time: "06:15", type: "Street Photo", location: "DUMBO", desc: "Lumière rasante de 6h00. Absence de foule.", coords: [40.7033, -73.9896] },
+          { time: "07:30", type: "Street Photo", location: "Brooklyn Bridge", desc: "Câbles d'acier comme lignes directrices.", coords: [40.7061, -73.9969] },
+          { time: "09:30", type: "Petit-Déj", location: "Zucker's Bagels", desc: "'Everything Bagel' roulé à la main.", coords: [40.7155, -74.0091] },
+          { time: "11:30", type: "Photo", location: "Smorgasburg", desc: "Portrait candide et fumée gourmande.", coords: [40.6611, -73.9634] },
+          { time: "14:00", type: "Street Photo", location: "Crown Heights", desc: "Mix culturel. Contrastes sous le métro.", coords: [40.6681, -73.9447] },
+          { time: "16:30", type: "Street Photo", location: "Smith-9th St", desc: "Station la plus haute. Train + Statue.", coords: [40.6734, -73.9959] },
+          { time: "19:30", type: "Dîner", location: "F&F Pizzeria", desc: "Mange debout, shoote la vie de quartier.", coords: [40.6792, -73.9992] },
+          { time: "21:00", type: "Retour", location: "HI NYC Hostel", desc: "Retour Manhattan.", coords: [40.7985, -73.9682] }
+        ]
+      },
+      {
+        day: 3, date: "Lundi 27 Avril", title: "Le Creuset Humain (LE S & Chinatown)",
+        desc: "L'âme ouvrière de NY. Visuellement saturé, c'est l'essence de la street à l'état brut.",
+        points: [
+          { time: "08:30", type: "Petit-Déj", location: "John's Coffee Shop (823 2nd Ave)", desc: "Diner old-school. Ambiance nostalgique parfaite pour des clichés à la Edward Hopper si tu te fais discret.", coords: [40.7511, -73.9715] },
+          { time: "09:15", type: "Transit", location: "Ligne 6 ou 4/5", desc: "Depuis Grand Central (42nd St), plonge direct vers le sud jusqu'à Canal St ou City Hall.", coords: [40.7527, -73.9772] },
+          { time: "10:00", type: "Street Photo", location: "Chinatown (Doyers St)", desc: "La courbure casse la grille de NY. Ombres dures, parfait pour un N&B dramatique.", coords: [40.7143, -73.9981] },
+          { time: "11:00", type: "Street Photo", location: "Columbus Park", desc: "Joueurs de Xiangqi. Éthique : 35mm, montrer un intérêt franc, capturer les mains et les regards.", coords: [40.7145, -74.0001] },
+          { time: "13:00", type: "Déjeuner", location: "North Dumpling (27A Essex St)", desc: "10 raviolis pour 4 $. On mange vite et on reste dans le rythme effréné de la rue.", coords: [40.7152, -73.9898] },
+          { time: "14:00", type: "Street Photo", location: "Lower East Side", desc: "Orchard/Delancey. Choc des cultures (Tenements vs verre, hipsters vs anciens).", coords: [40.7183, -73.9894] },
+          { time: "15:15", type: "Transit", location: "Lignes J ou Z", desc: "Depuis Essex St, direction Downtown jusqu'à Fulton St. Trajet ultra-rapide (~15 min).", coords: [40.7183, -73.9881] },
+          { time: "15:30", type: "Architecture", location: "L'Oculus & WTC", desc: "L'épine de Calatrava. Expose en manuel pour transformer les voyageurs en silhouettes sur le marbre.", coords: [40.7118, -74.0112] },
+          { time: "16:45", type: "Street Photo", location: "Stone Street", desc: "La plus ancienne rue pavée. Cherche la lumière rase sur les courtiers en terrasse.", coords: [40.7038, -74.0105] },
+          { time: "18:15", type: "Street Photo", location: "Staten Isl. Ferry", desc: "100% gratuit. Heure dorée sur la baie. À la proue au retour pour la skyline illuminée.", coords: [40.7013, -74.0135] },
+          { time: "19:30", type: "Transit", location: "Ligne 1 ou R/W", desc: "Remontée directe depuis South Ferry vers Midtown pour retrouver l'énergie du centre.", coords: [40.7013, -74.0132] },
+          { time: "20:30", type: "Dîner", location: "The Halal Guys (53rd & 6th)", desc: "Le stand d'origine. Le jaune vif et les gyrophares rendent magnifiquement à hauts ISO.", coords: [40.7618, -73.9793] }
+        ]
+      },
+      {
+        day: 4, date: "Mardi 28 Avril", title: "Vertige Vertical",
+        desc: "Échelle et ombres portées avec les cerisiers en toile de fond.",
+        points: [
+          { time: "07:30", type: "Street Photo", location: "Central Park", desc: "Branches comme cadre pour Billionaires' Row.", coords: [40.7850, -73.9638] },
+          { time: "11:30", type: "Street Photo", location: "The Met", desc: "Théâtre social de premier plan.", coords: [40.7794, -73.9632] },
+          { time: "13:00", type: "Déjeuner", location: "Gray's Papaya", desc: "Service brutal et efficace.", coords: [40.7790, -73.9818] },
+          { time: "14:00", type: "Street Photo", location: "5ème Avenue", desc: "La 'pêche' au rayon de soleil.", coords: [40.7628, -73.9743] },
+          { time: "16:30", type: "Street Photo", location: "Grand Central", desc: "Vitesse à 1/4s. Marée humaine.", coords: [40.7527, -73.9772] },
+          { time: "18:30", type: "Street Photo", location: "Tudor City Bridge", desc: "Alignement solaire (quasi-Manhattanhenge).", coords: [40.7486, -73.9701] },
+          { time: "20:30", type: "Dîner", location: "Empanada Mama", desc: "Énergie folle garantie.", coords: [40.7632, -73.9880] }
+        ]
+      },
+      {
+        day: 5, date: "Mercredi 29 Avril", title: "Le Projet Souterrain",
+        desc: "Le système circulatoire de la ville. Exigeant et sombre.",
+        points: [
+          { time: "08:30", type: "Petit-Déj", location: "Daily Provisions", desc: "Café et scone de haut vol.", coords: [40.7831, -73.9782] },
+          { time: "09:30", type: "Street Photo", location: "The 'S' Shuttle", desc: "3200 ISO, géométrie des wagons.", coords: [40.7559, -73.9866] },
+          { time: "11:30", type: "Street Photo", location: "Old City Hall (6)", desc: "Objectif collé à la vitre, rafale.", coords: [40.7127, -74.0055] },
+          { time: "13:00", type: "Déjeuner", location: "2 Bros Pizza", desc: "Le classique urbain.", coords: [40.7410, -73.9896] },
+          { time: "14:00", type: "Street Photo", location: "Ligne 7", desc: "Transition gratte-ciel / industriel.", coords: [40.7505, -73.9402] },
+          { time: "15:30", type: "Street Photo", location: "Queensboro Plaza", desc: "Ligne de fuite vers Manhattan.", coords: [40.7505, -73.9402] },
+          { time: "17:00", type: "Street Photo", location: "Gantry Plaza", desc: "Panneau Pepsi et skyline à contre-jour.", coords: [40.7457, -73.9576] },
+          { time: "20:00", type: "Dîner", location: "Birria-Landia", desc: "Locaux mangeant debout, idéal au flash.", coords: [40.7495, -73.8844] }
+        ]
+      },
+      {
+        day: 6, date: "Jeudi 30 Avril", title: "Néons Cyberpunk",
+        desc: "Architecture cast-iron, Brooklyn intemporel et néons.",
+        points: [
+          { time: "09:00", type: "Petit-Déj", location: "Deli local", desc: "Le fameux BEC.", coords: [40.7230, -73.9980] },
+          { time: "10:00", type: "Street Photo", location: "SoHo", desc: "Architecture Cast-iron et reflets.", coords: [40.7235, -73.9981] },
+          { time: "12:30", type: "Street Photo", location: "Washington Sq", desc: "Le chaos organisé.", coords: [40.7308, -73.9973] },
+          { time: "13:30", type: "Déjeuner", location: "Mamoun's Falafel", desc: "On mange en marchant.", coords: [40.7300, -74.0006] },
+          { time: "16:00", type: "Street Photo", location: "S Williamsburg", desc: "Silhouettes sombres et bus scolaires.", coords: [40.7029, -73.9577] },
+          { time: "18:30", type: "Dîner", location: "Gottlieb's", desc: "Deli casher historique.", coords: [40.7107, -73.9577] },
+          { time: "20:00", type: "Street Photo", location: "Koreatown", desc: "Vapeurs de BBQ et enseignes.", coords: [40.7477, -73.9869] }
+        ]
+      },
+      {
+        day: 7, date: "Vendredi 1er Mai", title: "Art Conceptuel",
+        desc: "De Harlem au Flatiron, l'énergie pure de Manhattan.",
+        points: [
+          { time: "08:30", type: "Street Photo", location: "Roosevelt Isl. Tram", desc: "Perspective 'drone'.", coords: [40.7607, -73.9644] },
+          { time: "10:00", type: "Street Photo", location: "Harlem", desc: "Vendeurs, fresques murales.", coords: [40.8105, -73.9463] },
+          { time: "13:00", type: "Déjeuner", location: "Amy Ruth's", desc: "Soul Food.", coords: [40.8032, -73.9535] },
+          { time: "15:30", type: "Street Photo", location: "Flatiron", desc: "Vents croisés. Parapluies retournés.", coords: [40.7411, -73.9897] },
+          { time: "17:00", type: "Art", location: "Whitney Museum", desc: "Interaction absurde visiteurs/art.", coords: [40.7396, -74.0089] },
+          { time: "20:30", type: "Dîner", location: "7th Street Burger", desc: "Smash burger culte.", coords: [40.7275, -73.9840] },
+          { time: "21:30", type: "Street Photo", location: "East Village", desc: "Faune alternative la nuit.", coords: [40.7282, -73.9880] }
+        ]
+      },
+      {
+        day: 8, date: "Samedi 2 Mai", title: "Départ et Coney Island",
+        desc: "Logistique optimisée. Bagages à Manhattan, shoot à Brooklyn.",
+        points: [
+          { time: "09:15", type: "Logistique", location: "Consigne Penn", desc: "Lâche ton sac, t'es libre !", coords: [40.7505, -73.9934] },
+          { time: "10:30", type: "Street Photo", location: "Coney Island", desc: "Manèges kitsch. Lumière dure.", coords: [40.5750, -73.9815] },
+          { time: "12:30", type: "Déjeuner", location: "Nathan's Famous", desc: "Le hot-dog mythique.", coords: [40.5754, -73.9818] },
+          { time: "15:30", type: "Logistique", location: "Penn Station", desc: "Récupération.", coords: [40.7505, -73.9934] },
+          { time: "16:00", type: "Transit", location: "NJ Transit", desc: "Direct EWR.", coords: [40.7505, -73.9934] },
+          { time: "17:00", type: "Départ", location: "Aéroport EWR", desc: "Vol à 20h25.", coords: [40.6895, -74.1745] }
+        ]
+      }
+    ];
+
+    // --- GLOBAL VARIABLES ---
+    let map;
+    let markersGroup;
+    let currentDayIndex = 0;
+
+    // --- ICONS & LOGIC ---
+    const typeIcons = {
+      "Street Photo": "ph-camera", "Petit-Déj": "ph-coffee", "Déjeuner": "ph-hamburger",
+      "Dîner": "ph-pizza", "Transit": "ph-train-simple", "Atterrissage": "ph-airplane-landing",
+      "Départ": "ph-airplane-takeoff", "Check-in": "ph-suitcase", "Repos": "ph-bed",
+      "Art": "ph-palette", "Architecture": "ph-buildings", "Logistique": "ph-backpack", "Photo": "ph-camera"
+    };
+
+    const createGlassMarker = (isPhoto, number) => {
+      const glowColor = isPhoto ? '168, 192, 255' : '255, 255, 255';
+      const bgClass = isPhoto ? 'iridescent-bg' : 'bg-white/20';
+
+      return L.divIcon({
+        className: 'custom-glass-icon',
+        html: `
+                    <div class="relative flex items-center justify-center w-8 h-8 cursor-pointer group">
+                        <div class="marker-number">${number}</div>
+                        <div class="absolute inset-0 rounded-full ${bgClass} opacity-50 blur-md group-hover:opacity-100 transition-opacity"></div>
+                        <div class="relative w-4 h-4 rounded-full bg-white border-2 border-transparent shadow-[0_0_10px_rgba(${glowColor},0.8)]"></div>
+                    </div>
+                `,
+        iconSize: [32, 32],
+        iconAnchor: [16, 16],
+        popupAnchor: [0, -16]
+      });
+    };
+
+    function initApp() {
+      initMap();
+      renderDaySelector();
+      selectDay(0);
+
+      setTimeout(() => {
+        document.getElementById('day-panel').classList.remove('opacity-0', 'translate-y-4');
+      }, 100);
+    }
+
+    function initMap() {
+      map = L.map('map', { zoomControl: false }).setView([40.7580, -73.9855], 12);
+
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; OpenStreetMap contributors',
+        subdomains: 'abcd',
+        maxZoom: 20
+      }).addTo(map);
+
+      markersGroup = L.featureGroup().addTo(map);
+    }
+
+    function renderDaySelector() {
+      const container = document.getElementById('day-selector');
+      itinerary.forEach((dayData, index) => {
+        const btn = document.createElement('button');
+        btn.className = `px-5 py-2.5 rounded-full text-sm font-semibold transition-all whitespace-nowrap duration-300 `;
+        btn.innerHTML = `Jour ${dayData.day}`;
+        btn.onclick = () => selectDay(index);
+        btn.id = `btn-day-${index}`;
+        container.appendChild(btn);
+      });
+    }
+
+    function updateDaySelector() {
+      itinerary.forEach((_, index) => {
+        const btn = document.getElementById(`btn-day-${index}`);
+        if (index === currentDayIndex) {
+          btn.className = 'px-5 py-2.5 rounded-full text-sm font-bold transition-all whitespace-nowrap duration-300 iridescent-bg text-black shadow-lg scale-105';
+        } else {
+          btn.className = 'px-5 py-2.5 rounded-full text-sm font-medium transition-all whitespace-nowrap duration-300 text-white/60 hover:text-white hover:bg-white/10';
+        }
+      });
+    }
+
+    function selectDay(index) {
+      currentDayIndex = index;
+      const dayData = itinerary[index];
+
+      const panel = document.getElementById('day-panel');
+      panel.classList.add('opacity-50', 'scale-[0.98]');
+
+      setTimeout(() => {
+        document.getElementById('day-date').innerText = dayData.date;
+        document.getElementById('day-title').innerText = dayData.title;
+        document.getElementById('day-desc').innerText = dayData.desc;
+
+        updateDaySelector();
+        renderTimeline(dayData);
+        updateMap(dayData);
+
+        document.getElementById('timeline-list').scrollTop = 0;
+        panel.classList.remove('opacity-50', 'scale-[0.98]');
+      }, 200);
+    }
+
+    function renderTimeline(dayData) {
+      const list = document.getElementById('timeline-list');
+      list.innerHTML = '<div class="timeline-track"></div>';
+
+      dayData.points.forEach((point, i) => {
+        const iconClass = typeIcons[point.type] || "ph-map-pin";
+        const isPhoto = point.type.includes('Photo') || point.type === "Architecture";
+
+        const html = `
+                    <div class="relative pl-12 py-4 cursor-pointer group" onclick="focusOnMap(${point.coords[0]}, ${point.coords[1]}, ${i})">
+                        <div class="absolute left-0 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center z-10 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6">
+                            <div class="absolute inset-2 rounded-full ${isPhoto ? 'iridescent-bg' : 'bg-white/10'} opacity-30 backdrop-blur-md"></div>
+                            <i class="ph ${iconClass} text-xl ${isPhoto ? 'text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]' : 'text-white/70'} relative z-10"></i>
+                        </div>
+                        
+                        <div class="bg-white/5 border border-white/5 rounded-2xl p-4 backdrop-blur-sm transition-colors group-hover:bg-white/10 group-hover:border-white/20">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="font-semibold text-white tracking-wide">${point.location}</span>
+                                <span class="text-xs font-mono font-bold ${isPhoto ? 'iridescent-text' : 'text-white/50'}">${point.time}</span>
+                            </div>
+                            <div class="flex gap-2 mb-2">
+                                <span class="text-[9px] uppercase font-black bg-indigo-500/80 text-white px-1.5 rounded-sm">Étape ${i + 1}</span>
+                                <span class="text-[9px] uppercase tracking-wider px-2 bg-black/40 text-white/70 rounded-full border border-white/10">${point.type}</span>
+                            </div>
+                            <p class="text-xs text-white/60 leading-relaxed group-hover:text-white/80 transition-colors">${point.desc}</p>
+                        </div>
+                    </div>
+                `;
+        list.insertAdjacentHTML('beforeend', html);
+      });
+    }
+
+    let currentMarkers = [];
+
+    function updateMap(dayData) {
+      markersGroup.clearLayers();
+      currentMarkers = [];
+      const points = [];
+
+      dayData.points.forEach((point, i) => {
+        const isPhoto = point.type.includes('Photo') || point.type === "Architecture";
+        const marker = L.marker(point.coords, {
+          icon: createGlassMarker(isPhoto, i + 1)
+        });
+
+        const popupContent = `
+                    <div class="font-sans">
+                        <div class="text-[10px] font-bold uppercase tracking-wider mb-1 opacity-70 flex justify-between">
+                            <span>${point.time}</span>
+                            <span>${point.type}</span>
+                        </div>
+                        <h3 class="text-base font-bold mb-1 text-white">${point.location}</h3>
+                        <p class="text-xs leading-relaxed text-white/80">${point.desc}</p>
+                    </div>
+                `;
+
+        marker.bindPopup(popupContent, {
+          closeButton: false,
+          className: 'glass-popup'
+        });
+
+        markersGroup.addLayer(marker);
+        currentMarkers.push(marker);
+        points.push(point.coords);
+      });
+
+      if (points.length > 1) {
+        // Thicker, glowing path line for better readability
+        L.polyline(points, {
+          color: '#a8c0ff',
+          weight: 3,
+          opacity: 0.8,
+          dashArray: '5, 10',
+          lineCap: 'round'
+        }).addTo(markersGroup);
+      }
+
+      if (points.length > 0) {
+        map.flyToBounds(markersGroup.getBounds(), { padding: [80, 80], maxZoom: 15, duration: 1.5 });
+      }
+    }
+
+    function focusOnMap(lat, lng, index) {
+      map.flyTo([lat, lng], 16, {
+        animate: true,
+        duration: 1.2
+      });
+
+      if (currentMarkers[index]) {
+        setTimeout(() => {
+          currentMarkers[index].openPopup();
+        }, 1200);
+      }
+    }
+
+    window.onload = initApp;
+  </script>
+</body>
+
+</html>
