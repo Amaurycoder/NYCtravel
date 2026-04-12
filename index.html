@@ -2,505 +2,867 @@
 <html lang="fr" class="dark">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NYC Street Photo Itinerary - 2026 Edition</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NYC Street Photo Itinerary - 2026 Edition</title>
 
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
-  <!-- Google Fonts (Plus Jakarta Sans for a modern tech feel) -->
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
 
-  <!-- Phosphor Icons -->
-  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-  <style>
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background-color: #050505;
-      color: #ffffff;
-      margin: 0;
-      overflow: hidden;
-    }
+    <!-- PWA Settings -->
+    <link rel="manifest" href="./manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="./icon.svg">
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').catch(() => {});
+            });
+        }
+    </script>
 
-    /* --- 2026 Glassmorphism Utilities --- */
-    .glass-panel {
-      background: rgba(20, 20, 25, 0.45);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    }
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #050505;
+            color: #ffffff;
+            margin: 0;
+            overflow: hidden;
+            overscroll-behavior-y: none;
+        }
 
-    .glass-pill {
-      background: rgba(30, 30, 35, 0.5);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    }
+        /* --- 2026 Glassmorphism Utilities --- */
+        .glass-panel {
+            background: rgba(20, 20, 25, 0.45);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
 
-    .iridescent-text {
-      background: linear-gradient(135deg, #a8c0ff 0%, #3f2b96 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      color: transparent;
-    }
+        .glass-pill {
+            background: rgba(30, 30, 35, 0.5);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
 
-    .iridescent-bg {
-      background: linear-gradient(135deg, #a8c0ff 0%, #3f2b96 100%);
-    }
+        /* Hide scrollbars */
+        ::-webkit-scrollbar {
+            display: none;
+        }
 
-    /* Hide scrollbars for ultra-clean look */
-    ::-webkit-scrollbar {
-      display: none;
-    }
+        * {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
 
-    * {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
+        /* --- Map Adjustments --- */
+        #map {
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
 
-    /* --- Map Adjustments --- */
-    #map {
-      width: 100vw;
-      height: 100vh;
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 0;
-    }
+        /* Glassmorphic Leaflet Popups */
+        .leaflet-popup-content-wrapper {
+            background: rgba(20, 20, 25, 0.75) !important;
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: white !important;
+            border-radius: 16px !important;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6) !important;
+        }
 
-    .leaflet-layer,
-    .leaflet-control-attribution {
-      filter: grayscale(100%) invert(100%) hue-rotate(180deg) brightness(85%) contrast(120%);
-    }
+        .leaflet-popup-tip {
+            background: rgba(20, 20, 25, 0.75) !important;
+            backdrop-filter: blur(20px) !important;
+        }
 
-    /* Glassmorphic Leaflet Popups */
-    .leaflet-popup-content-wrapper {
-      background: rgba(20, 20, 25, 0.6) !important;
-      backdrop-filter: blur(16px) !important;
-      -webkit-backdrop-filter: blur(16px) !important;
-      border: 1px solid rgba(255, 255, 255, 0.1) !important;
-      color: white !important;
-      border-radius: 16px !important;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5) !important;
-    }
+        .leaflet-popup-content {
+            margin: 16px !important;
+        }
 
-    .leaflet-popup-tip {
-      background: rgba(20, 20, 25, 0.6) !important;
-      backdrop-filter: blur(16px) !important;
-    }
+        .leaflet-popup-close-button {
+            color: rgba(255, 255, 255, 0.5) !important;
+        }
 
-    .leaflet-popup-content {
-      margin: 16px !important;
-    }
+        /* Timeline connecting line */
+        .timeline-track {
+            position: absolute;
+            left: 23px;
+            top: 40px;
+            bottom: 0;
+            width: 1px;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.05) 100%);
+            z-index: -1;
+        }
 
-    .leaflet-popup-close-button {
-      color: rgba(255, 255, 255, 0.5) !important;
-    }
+        /* Sparkle Animation for AI Button */
+        @keyframes shimmer {
+            0% {
+                background-position: 0% 50%;
+            }
 
-    /* Timeline connecting line */
-    .timeline-track {
-      position: absolute;
-      left: 23px;
-      top: 40px;
-      bottom: 0;
-      width: 1px;
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 100%);
-      z-index: -1;
-    }
+            50% {
+                background-position: 100% 50%;
+            }
 
-    /* Marker Numbering */
-    .marker-number {
-      position: absolute;
-      top: -12px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #fff;
-      color: #000;
-      font-size: 10px;
-      font-weight: 800;
-      padding: 1px 5px;
-      border-radius: 4px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-      border: 1px solid #000;
-    }
-  </style>
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .btn-ai {
+            background: linear-gradient(270deg, rgba(79, 70, 229, 0.2), rgba(236, 72, 153, 0.2), rgba(79, 70, 229, 0.2));
+            background-size: 200% 200%;
+            animation: shimmer 4s ease infinite;
+            border: 1px solid rgba(236, 72, 153, 0.3);
+        }
+
+        .btn-ai:hover {
+            background: linear-gradient(270deg, rgba(79, 70, 229, 0.4), rgba(236, 72, 153, 0.4), rgba(79, 70, 229, 0.4));
+            background-size: 200% 200%;
+        }
+
+        /* Modal Styles */
+        .modal-transition {
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .modal-content-anim {
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .modal-hidden .modal-content-anim {
+            transform: scale(0.95) translateY(20px);
+        }
+
+        .markdown-body ul {
+            list-style-type: disc;
+            padding-left: 1.5em;
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+        }
+
+        .markdown-body strong {
+            color: #f472b6;
+        }
+
+        /* Remove arrows from number inputs */
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
 </head>
 
 <body class="relative text-sm text-gray-200">
 
-  <!-- The Map (Full Screen) -->
-  <div id="map"></div>
+    <!-- The Map (Full Screen) -->
+    <div id="map"></div>
 
-  <!-- UI Overlay container -->
-  <div class="absolute inset-0 z-10 pointer-events-none p-4 md:p-8 flex flex-col justify-between">
+    <!-- UI Overlay container -->
+    <div class="fixed inset-0 z-10 pointer-events-none p-3 pb-6 md:p-8 flex flex-col h-[100dvh] w-full">
 
-    <!-- Top Section (Header & Info Panel) -->
-    <div class="flex flex-col gap-6 md:w-96 max-h-[80vh]">
+        <!-- Floating Header -->
+        <header
+            class="glass-panel rounded-2xl w-full md:w-96 p-4 md:p-5 pointer-events-auto shrink-0 transition-transform hover:scale-[1.01] shadow-xl">
+            <div class="flex items-center gap-3 md:gap-4 w-full">
+                <div
+                    class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-slate-800 flex items-center justify-center shadow-lg shrink-0 border border-slate-700">
+                    <i class="ph ph-aperture text-xl md:text-2xl text-white"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg md:text-xl font-bold tracking-tight text-white leading-tight">NYC Focus</h1>
+                    <p class="text-[10px] md:text-xs text-white/50 font-medium">Street Photography 2026</p>
+                </div>
 
-      <!-- Floating Header -->
-      <header class="glass-panel rounded-2xl p-5 pointer-events-auto transition-transform hover:scale-[1.01]">
-        <div class="flex items-center gap-4">
-          <div class="w-12 h-12 rounded-full iridescent-bg flex items-center justify-center shadow-lg">
-            <i class="ph ph-aperture text-2xl text-white"></i>
-          </div>
-          <div>
-            <h1 class="text-xl font-bold tracking-tight text-white">NYC Focus</h1>
-            <p class="text-xs text-white/50 font-medium">Street Photography 2026</p>
-          </div>
+                <!-- Bouton Budget -->
+                <button onclick="toggleBudgetModal()"
+                    class="ml-auto flex items-center justify-center w-9 h-9 md:w-auto md:h-auto md:px-4 md:py-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 transition-all font-semibold text-white shadow-lg backdrop-blur-md shrink-0">
+                    <i class="ph ph-wallet text-emerald-400 text-lg md:text-base"></i> <span
+                        class="hidden md:inline md:ml-2 text-sm">Budget</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Espace vide forçant le panneau de détails vers le bas (Map First) -->
+        <div class="flex-1 pointer-events-none"></div>
+
+        <!-- Floating Timeline Panel -->
+        <div class="glass-panel rounded-3xl w-full md:w-96 h-auto flex flex-col overflow-hidden pointer-events-auto opacity-0 translate-y-4 transition-all duration-300 shrink-0 shadow-2xl"
+            id="day-panel">
+
+            <!-- Day Hero (Collapsible Trigger) -->
+            <div class="p-4 md:p-5 border-b border-white/5 relative shrink-0 cursor-pointer group"
+                onclick="toggleTimeline()">
+                <div class="flex justify-between items-start gap-4">
+                    <div>
+                        <div class="flex gap-2 items-center mb-1">
+                            <span class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-slate-300 block" id="day-date">Date</span>
+                            <span class="text-[8px] md:text-[9px] uppercase tracking-wider font-bold bg-orange-500/20 text-orange-400 border border-orange-500/30 px-1.5 py-0.5 rounded-full"><i class="ph-fill ph-sun"></i> Golden à 18h50</span>
+                        </div>
+                        <h2 class="text-xl md:text-2xl font-bold text-white mb-1 leading-tight" id="day-title">Titre
+                        </h2>
+                    </div>
+                    <button
+                        class="w-8 h-8 shrink-0 rounded-full bg-white/10 group-hover:bg-white/20 transition-colors flex items-center justify-center text-white/70">
+                        <i class="ph ph-caret-down transition-transform duration-300 rotate-180"
+                            id="timeline-toggle-icon"></i>
+                    </button>
+                </div>
+                <p class="text-xs md:text-sm text-white/60 font-light leading-relaxed line-clamp-1 md:line-clamp-2 mt-1"
+                    id="day-desc">Description</p>
+            </div>
+
+            <!-- Steps List -->
+            <div class="p-4 md:p-6 overflow-y-auto hidden max-h-[50dvh]" id="timeline-list">
+                <!-- Injected by JS -->
+            </div>
         </div>
-      </header>
 
-      <!-- Floating Timeline Panel -->
-      <div
-        class="glass-panel rounded-3xl flex-1 flex flex-col overflow-hidden pointer-events-auto opacity-0 translate-y-4 transition-all duration-700 ease-out"
-        id="day-panel">
-
-        <!-- Day Hero -->
-        <div class="p-6 pb-4 border-b border-white/5 relative overflow-hidden">
-          <div class="absolute top-0 right-0 w-32 h-32 iridescent-bg opacity-20 blur-3xl rounded-full -mr-10 -mt-10">
-          </div>
-          <span class="text-xs font-bold uppercase tracking-widest text-indigo-300 mb-2 block" id="day-date">Date</span>
-          <h2 class="text-2xl font-bold text-white mb-2 leading-tight" id="day-title">Titre</h2>
-          <p class="text-sm text-white/60 font-light leading-relaxed" id="day-desc">Description</p>
+        <!-- Bottom Section (Day Picker Pill) -->
+        <div class="w-full mt-3 flex justify-center pointer-events-auto shrink-0 z-20">
+            <nav class="glass-pill rounded-full p-1.5 md:p-2 flex gap-1 overflow-x-auto max-w-[95vw] shadow-2xl items-center snap-x scroll-smooth"
+                id="day-selector">
+                <!-- Injected by JS -->
+            </nav>
         </div>
-
-        <!-- Steps List -->
-        <div class="p-6 overflow-y-auto flex-1 relative" id="timeline-list">
-          <!-- Injected by JS -->
-        </div>
-      </div>
     </div>
 
-    <!-- Bottom Section (Day Picker Pill) -->
-    <div class="w-full flex justify-center pointer-events-auto pb-4 md:pb-0">
-      <nav class="glass-pill rounded-full p-2 flex gap-1 overflow-x-auto max-w-[95vw] shadow-2xl items-center"
-        id="day-selector">
-        <!-- Injected by JS -->
-      </nav>
+
+
+    <!-- Budget Modal Interactif (Refonte Par Dépense) -->
+    <div id="budget-modal"
+        class="fixed inset-0 z-50 modal-transition modal-hidden flex items-center justify-center p-3 md:p-4">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-md transition-opacity" onclick="toggleBudgetModal()">
+        </div>
+
+        <div
+            class="glass-panel modal-content-anim relative w-full max-w-3xl h-[90vh] flex flex-col rounded-3xl shadow-2xl border border-white/20">
+
+            <!-- Header du Modal -->
+            <div class="p-5 md:p-8 shrink-0 pb-4">
+                <button onclick="toggleBudgetModal()"
+                    class="absolute top-4 right-4 md:top-6 md:right-6 text-white/50 hover:text-white transition-colors bg-white/5 hover:bg-white/10 rounded-full p-1 z-10">
+                    <i class="ph ph-x text-xl"></i>
+                </button>
+
+                <div class="flex items-center gap-3 mb-6">
+                    <div
+                        class="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center shadow-[0_0_15px_rgba(52,211,153,0.4)]">
+                        <i class="ph ph-wallet text-xl text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl md:text-2xl font-bold text-white">Suivi par Dépense</h3>
+                        <p class="text-[10px] md:text-xs text-white/50">Saisissez vos dépenses réelles pour calculer
+                            l'écart.</p>
+                    </div>
+                </div>
+
+                <!-- Global Totals Dashboard -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <div
+                        class="bg-white/5 border border-white/10 rounded-xl p-3 flex flex-col items-center justify-center">
+                        <div class="text-[9px] md:text-[10px] text-white/50 mb-1 uppercase tracking-wider font-bold">
+                            Prévu Total</div>
+                        <div class="text-lg md:text-xl font-mono font-bold text-white" id="b-planned">$0.00</div>
+                    </div>
+                    <div
+                        class="bg-white/5 border border-white/10 rounded-xl p-3 flex flex-col items-center justify-center">
+                        <div class="text-[9px] md:text-[10px] text-white/50 mb-1 uppercase tracking-wider font-bold">
+                            Dépensé Total</div>
+                        <div class="text-lg md:text-xl font-mono font-bold text-white" id="b-spent">$0.00</div>
+                    </div>
+                    <div
+                        class="bg-white/10 border border-white/20 rounded-xl p-3 flex flex-col items-center justify-center shadow-inner">
+                        <div class="text-[9px] md:text-[10px] text-white/50 mb-1 uppercase tracking-wider font-bold">
+                            Reste du Budget</div>
+                        <div class="text-lg md:text-xl font-mono font-bold text-white transition-colors" id="b-rem">
+                            $0.00</div>
+                    </div>
+                    <div
+                        class="bg-white/5 border border-white/10 rounded-xl p-3 flex flex-col items-center justify-center">
+                        <div
+                            class="text-[9px] md:text-[10px] text-white/50 mb-1 uppercase tracking-wider font-bold text-center">
+                            Écart (Postes Payés)</div>
+                        <div class="text-lg md:text-xl font-mono font-bold text-white/50 transition-colors" id="b-diff">
+                            $0.00</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Liste Scrollable des dépenses uniques -->
+            <div class="flex-1 overflow-y-auto p-5 md:p-8 pt-0">
+                <div class="flex text-[10px] font-bold uppercase tracking-wider text-white/40 mb-2 px-3">
+                    <div class="w-full md:w-1/2">Poste de Dépense</div>
+                    <div class="w-full md:w-1/2 flex justify-between px-2">
+                        <div class="w-16 text-right">Prévu</div>
+                        <div class="w-24 text-center">Réel ($)</div>
+                        <div class="w-16 text-right">Diff.</div>
+                    </div>
+                </div>
+                <div id="expense-list" class="flex flex-col gap-2">
+                    <!-- Injecté par JavaScript -->
+                </div>
+            </div>
+
+        </div>
     </div>
-  </div>
 
-  <!-- Scripts -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script>
-    // --- DATA ---
-    const itinerary = [
-      {
-        day: 1, date: "Samedi 25 Avril", title: "L'Immersion et le Choc des Néons",
-        desc: "L'arrivée nocturne est une opportunité idéale pour se familiariser avec l'esthétique électrique de la ville.",
-        points: [
-          { time: "19:15", type: "Atterrissage", location: "Aéroport EWR", desc: "Douanes, récupération des bagages.", coords: [40.6895, -74.1745] },
-          { time: "20:15", type: "Transit", location: "NJ Transit / Ligne 1", desc: "Trajet vers Penn Station, puis ligne 1.", coords: [40.7505, -73.9934] },
-          { time: "21:30", type: "Check-in", location: "HI NYC Hostel", desc: "Dépôt équipement. Garder un objectif lumineux (f/1.8).", coords: [40.7985, -73.9682] },
-          { time: "22:00", type: "Dîner", location: "Taqueria y Fonda", desc: "Plats massifs pour caler un estomac après le vol.", coords: [40.8015, -73.9655] },
-          { time: "23:00", type: "Street Photo", location: "Broadway (UWS)", desc: "Rechercher les Bodegas. ISO 3200/6400, sous-exposer.", coords: [40.8000, -73.9680] },
-          { time: "00:30", type: "Repos", location: "HI NYC Hostel", desc: "Retour pour le réveil matinal.", coords: [40.7985, -73.9682] }
-        ]
-      },
-      {
-        day: 2, date: "Dimanche 26 Avril", title: "Acier, Béton et Brooklyn",
-        desc: "Le décalage horaire garantit un réveil à l'aube. C'est ton avantage tactique.",
-        points: [
-          { time: "05:30", type: "Transit", location: "High Street", desc: "Transfert A/C vers Brooklyn.", coords: [40.6993, -73.9904] },
-          { time: "06:15", type: "Street Photo", location: "DUMBO", desc: "Lumière rasante de 6h00. Absence de foule.", coords: [40.7033, -73.9896] },
-          { time: "07:30", type: "Street Photo", location: "Brooklyn Bridge", desc: "Câbles d'acier comme lignes directrices.", coords: [40.7061, -73.9969] },
-          { time: "09:30", type: "Petit-Déj", location: "Zucker's Bagels", desc: "'Everything Bagel' roulé à la main.", coords: [40.7155, -74.0091] },
-          { time: "11:30", type: "Photo", location: "Smorgasburg", desc: "Portrait candide et fumée gourmande.", coords: [40.6611, -73.9634] },
-          { time: "14:00", type: "Street Photo", location: "Crown Heights", desc: "Mix culturel. Contrastes sous le métro.", coords: [40.6681, -73.9447] },
-          { time: "16:30", type: "Street Photo", location: "Smith-9th St", desc: "Station la plus haute. Train + Statue.", coords: [40.6734, -73.9959] },
-          { time: "19:30", type: "Dîner", location: "F&F Pizzeria", desc: "Mange debout, shoote la vie de quartier.", coords: [40.6792, -73.9992] },
-          { time: "21:00", type: "Retour", location: "HI NYC Hostel", desc: "Retour Manhattan.", coords: [40.7985, -73.9682] }
-        ]
-      },
-      {
-        day: 3, date: "Lundi 27 Avril", title: "Le Creuset Humain (LE S & Chinatown)",
-        desc: "L'âme ouvrière de NY. Visuellement saturé, c'est l'essence de la street à l'état brut.",
-        points: [
-          { time: "08:30", type: "Petit-Déj", location: "John's Coffee Shop (823 2nd Ave)", desc: "Diner old-school. Ambiance nostalgique parfaite pour des clichés à la Edward Hopper si tu te fais discret.", coords: [40.7511, -73.9715] },
-          { time: "09:15", type: "Transit", location: "Ligne 6 ou 4/5", desc: "Depuis Grand Central (42nd St), plonge direct vers le sud jusqu'à Canal St ou City Hall.", coords: [40.7527, -73.9772] },
-          { time: "10:00", type: "Street Photo", location: "Chinatown (Doyers St)", desc: "La courbure casse la grille de NY. Ombres dures, parfait pour un N&B dramatique.", coords: [40.7143, -73.9981] },
-          { time: "11:00", type: "Street Photo", location: "Columbus Park", desc: "Joueurs de Xiangqi. Éthique : 35mm, montrer un intérêt franc, capturer les mains et les regards.", coords: [40.7145, -74.0001] },
-          { time: "13:00", type: "Déjeuner", location: "North Dumpling (27A Essex St)", desc: "10 raviolis pour 4 $. On mange vite et on reste dans le rythme effréné de la rue.", coords: [40.7152, -73.9898] },
-          { time: "14:00", type: "Street Photo", location: "Lower East Side", desc: "Orchard/Delancey. Choc des cultures (Tenements vs verre, hipsters vs anciens).", coords: [40.7183, -73.9894] },
-          { time: "15:15", type: "Transit", location: "Lignes J ou Z", desc: "Depuis Essex St, direction Downtown jusqu'à Fulton St. Trajet ultra-rapide (~15 min).", coords: [40.7183, -73.9881] },
-          { time: "15:30", type: "Architecture", location: "L'Oculus & WTC", desc: "L'épine de Calatrava. Expose en manuel pour transformer les voyageurs en silhouettes sur le marbre.", coords: [40.7118, -74.0112] },
-          { time: "16:45", type: "Street Photo", location: "Stone Street", desc: "La plus ancienne rue pavée. Cherche la lumière rase sur les courtiers en terrasse.", coords: [40.7038, -74.0105] },
-          { time: "18:15", type: "Street Photo", location: "Staten Isl. Ferry", desc: "100% gratuit. Heure dorée sur la baie. À la proue au retour pour la skyline illuminée.", coords: [40.7013, -74.0135] },
-          { time: "19:30", type: "Transit", location: "Ligne 1 ou R/W", desc: "Remontée directe depuis South Ferry vers Midtown pour retrouver l'énergie du centre.", coords: [40.7013, -74.0132] },
-          { time: "20:30", type: "Dîner", location: "The Halal Guys (53rd & 6th)", desc: "Le stand d'origine. Le jaune vif et les gyrophares rendent magnifiquement à hauts ISO.", coords: [40.7618, -73.9793] }
-        ]
-      },
-      {
-        day: 4, date: "Mardi 28 Avril", title: "Vertige Vertical",
-        desc: "Échelle et ombres portées avec les cerisiers en toile de fond.",
-        points: [
-          { time: "07:30", type: "Street Photo", location: "Central Park", desc: "Branches comme cadre pour Billionaires' Row.", coords: [40.7850, -73.9638] },
-          { time: "11:30", type: "Street Photo", location: "The Met", desc: "Théâtre social de premier plan.", coords: [40.7794, -73.9632] },
-          { time: "13:00", type: "Déjeuner", location: "Gray's Papaya", desc: "Service brutal et efficace.", coords: [40.7790, -73.9818] },
-          { time: "14:00", type: "Street Photo", location: "5ème Avenue", desc: "La 'pêche' au rayon de soleil.", coords: [40.7628, -73.9743] },
-          { time: "16:30", type: "Street Photo", location: "Grand Central", desc: "Vitesse à 1/4s. Marée humaine.", coords: [40.7527, -73.9772] },
-          { time: "18:30", type: "Street Photo", location: "Tudor City Bridge", desc: "Alignement solaire (quasi-Manhattanhenge).", coords: [40.7486, -73.9701] },
-          { time: "20:30", type: "Dîner", location: "Empanada Mama", desc: "Énergie folle garantie.", coords: [40.7632, -73.9880] }
-        ]
-      },
-      {
-        day: 5, date: "Mercredi 29 Avril", title: "Le Projet Souterrain",
-        desc: "Le système circulatoire de la ville. Exigeant et sombre.",
-        points: [
-          { time: "08:30", type: "Petit-Déj", location: "Daily Provisions", desc: "Café et scone de haut vol.", coords: [40.7831, -73.9782] },
-          { time: "09:30", type: "Street Photo", location: "The 'S' Shuttle", desc: "3200 ISO, géométrie des wagons.", coords: [40.7559, -73.9866] },
-          { time: "11:30", type: "Street Photo", location: "Old City Hall (6)", desc: "Objectif collé à la vitre, rafale.", coords: [40.7127, -74.0055] },
-          { time: "13:00", type: "Déjeuner", location: "2 Bros Pizza", desc: "Le classique urbain.", coords: [40.7410, -73.9896] },
-          { time: "14:00", type: "Street Photo", location: "Ligne 7", desc: "Transition gratte-ciel / industriel.", coords: [40.7505, -73.9402] },
-          { time: "15:30", type: "Street Photo", location: "Queensboro Plaza", desc: "Ligne de fuite vers Manhattan.", coords: [40.7505, -73.9402] },
-          { time: "17:00", type: "Street Photo", location: "Gantry Plaza", desc: "Panneau Pepsi et skyline à contre-jour.", coords: [40.7457, -73.9576] },
-          { time: "20:00", type: "Dîner", location: "Birria-Landia", desc: "Locaux mangeant debout, idéal au flash.", coords: [40.7495, -73.8844] }
-        ]
-      },
-      {
-        day: 6, date: "Jeudi 30 Avril", title: "Néons Cyberpunk",
-        desc: "Architecture cast-iron, Brooklyn intemporel et néons.",
-        points: [
-          { time: "09:00", type: "Petit-Déj", location: "Deli local", desc: "Le fameux BEC.", coords: [40.7230, -73.9980] },
-          { time: "10:00", type: "Street Photo", location: "SoHo", desc: "Architecture Cast-iron et reflets.", coords: [40.7235, -73.9981] },
-          { time: "12:30", type: "Street Photo", location: "Washington Sq", desc: "Le chaos organisé.", coords: [40.7308, -73.9973] },
-          { time: "13:30", type: "Déjeuner", location: "Mamoun's Falafel", desc: "On mange en marchant.", coords: [40.7300, -74.0006] },
-          { time: "16:00", type: "Street Photo", location: "S Williamsburg", desc: "Silhouettes sombres et bus scolaires.", coords: [40.7029, -73.9577] },
-          { time: "18:30", type: "Dîner", location: "Gottlieb's", desc: "Deli casher historique.", coords: [40.7107, -73.9577] },
-          { time: "20:00", type: "Street Photo", location: "Koreatown", desc: "Vapeurs de BBQ et enseignes.", coords: [40.7477, -73.9869] }
-        ]
-      },
-      {
-        day: 7, date: "Vendredi 1er Mai", title: "Art Conceptuel",
-        desc: "De Harlem au Flatiron, l'énergie pure de Manhattan.",
-        points: [
-          { time: "08:30", type: "Street Photo", location: "Roosevelt Isl. Tram", desc: "Perspective 'drone'.", coords: [40.7607, -73.9644] },
-          { time: "10:00", type: "Street Photo", location: "Harlem", desc: "Vendeurs, fresques murales.", coords: [40.8105, -73.9463] },
-          { time: "13:00", type: "Déjeuner", location: "Amy Ruth's", desc: "Soul Food.", coords: [40.8032, -73.9535] },
-          { time: "15:30", type: "Street Photo", location: "Flatiron", desc: "Vents croisés. Parapluies retournés.", coords: [40.7411, -73.9897] },
-          { time: "17:00", type: "Art", location: "Whitney Museum", desc: "Interaction absurde visiteurs/art.", coords: [40.7396, -74.0089] },
-          { time: "20:30", type: "Dîner", location: "7th Street Burger", desc: "Smash burger culte.", coords: [40.7275, -73.9840] },
-          { time: "21:30", type: "Street Photo", location: "East Village", desc: "Faune alternative la nuit.", coords: [40.7282, -73.9880] }
-        ]
-      },
-      {
-        day: 8, date: "Samedi 2 Mai", title: "Départ et Coney Island",
-        desc: "Logistique optimisée. Bagages à Manhattan, shoot à Brooklyn.",
-        points: [
-          { time: "09:15", type: "Logistique", location: "Consigne Penn", desc: "Lâche ton sac, t'es libre !", coords: [40.7505, -73.9934] },
-          { time: "10:30", type: "Street Photo", location: "Coney Island", desc: "Manèges kitsch. Lumière dure.", coords: [40.5750, -73.9815] },
-          { time: "12:30", type: "Déjeuner", location: "Nathan's Famous", desc: "Le hot-dog mythique.", coords: [40.5754, -73.9818] },
-          { time: "15:30", type: "Logistique", location: "Penn Station", desc: "Récupération.", coords: [40.7505, -73.9934] },
-          { time: "16:00", type: "Transit", location: "NJ Transit", desc: "Direct EWR.", coords: [40.7505, -73.9934] },
-          { time: "17:00", type: "Départ", location: "Aéroport EWR", desc: "Vol à 20h25.", coords: [40.6895, -74.1745] }
-        ]
-      }
-    ];
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // --- GEMINI API CONFIGURATION ---
+        const apiKey = ""; // API Key
 
-    // --- GLOBAL VARIABLES ---
-    let map;
-    let markersGroup;
-    let currentDayIndex = 0;
+        // --- ITINERARY DATA ---
+        const itinerary = [
+            {
+                day: 1, date: "Samedi 25 Avril", title: "L'Immersion et le Choc des Néons",
+                desc: "L'arrivée nocturne est une opportunité idéale pour se familiariser avec l'esthétique électrique de la ville.",
+                points: [
+                    { time: "19:15", type: "Atterrissage", location: "Aéroport EWR", desc: "Douanes, récupération des bagages.", coords: [40.6895, -74.1745] },
+                    { time: "20:15", type: "Transit", location: "NJ Transit / Ligne 1", desc: "Trajet vers Penn Station, puis ligne 1.", coords: [40.7505, -73.9934] },
+                    { time: "21:30", type: "Check-in", location: "HI NYC Hostel", desc: "Dépôt équipement. Garder un objectif lumineux (f/1.8).", coords: [40.7985, -73.9682] },
+                    { time: "22:00", type: "Dîner", location: "Taqueria y Fonda", desc: "Plats massifs pour caler un estomac après le vol.", coords: [40.8015, -73.9655] },
+                    { time: "23:00", type: "Street Photo", location: "Broadway (UWS)", desc: "Rechercher les Bodegas. ISO 3200/6400, sous-exposer.", coords: [40.8000, -73.9680] },
+                    { time: "00:30", type: "Repos", location: "HI NYC Hostel", desc: "Retour pour le réveil matinal.", coords: [40.7985, -73.9682] }
+                ]
+            },
+            {
+                day: 2, date: "Dimanche 26 Avril", title: "Acier, Béton et Brooklyn",
+                desc: "Le décalage horaire garantit un réveil à l'aube. C'est ton avantage tactique pour DUMBO.",
+                points: [
+                    { time: "05:30", type: "Transit", location: "High Street", desc: "Ligne 1 vers 59 St, transfert A/C vers Brooklyn.", coords: [40.6993, -73.9904] },
+                    { time: "06:15", type: "Street Photo", location: "DUMBO", desc: "Lumière rasante de 6h00. Absence de foule.", coords: [40.7033, -73.9896] },
+                    { time: "07:30", type: "Street Photo", location: "Brooklyn Bridge", desc: "Câbles d'acier comme lignes directrices.", coords: [40.7061, -73.9969] },
+                    { time: "09:30", type: "Petit-Déj", location: "Zucker's Bagels", desc: "'Everything Bagel' roulé à la main.", coords: [40.7155, -74.0091] },
+                    { time: "10:30", type: "Transit", location: "Grand Army Plaza", desc: "Lignes 2/3 depuis Chambers St.", coords: [40.6750, -73.9700] },
+                    { time: "11:30", type: "Photo", location: "Smorgasburg", desc: "Portrait candide et fumée gourmande.", coords: [40.6611, -73.9634] },
+                    { time: "14:00", type: "Street Photo", location: "Crown Heights", desc: "Mix culturel. Contrastes sous le métro.", coords: [40.6681, -73.9447] },
+                    { time: "16:30", type: "Street Photo", location: "Smith-9th St", desc: "Station la plus haute. Train + Statue.", coords: [40.6734, -73.9959] },
+                    { time: "19:30", type: "Dîner", location: "F&F Pizzeria", desc: "Mange debout, shoote la vie de quartier.", coords: [40.6792, -73.9992] },
+                    { time: "21:00", type: "Retour", location: "HI NYC Hostel", desc: "Retour Manhattan (UWS).", coords: [40.7985, -73.9682] }
+                ]
+            },
+            {
+                day: 3, date: "Lundi 27 Avril", title: "Le Creuset Humain et Géométrie",
+                desc: "Attaque directement dans le vif du sujet en plein cœur du Downtown.",
+                points: [
+                    { time: "08:30", type: "Transit", location: "Grand St (LES)", desc: "Descente directe de l'UWS vers le Lower East Side.", coords: [40.7183, -73.9930] },
+                    { time: "09:15", type: "Petit-Déj", location: "Kopitiam", desc: "Café malaisien légendaire. Démarre plongé dans l'ambiance.", coords: [40.7138, -73.9908] },
+                    { time: "10:00", type: "Street Photo", location: "Chinatown", desc: "Doyers St. Courbure casse la grille. Ombres dures pour N&B.", coords: [40.7143, -73.9981] },
+                    { time: "11:00", type: "Street Photo", location: "Columbus Park", desc: "Joueurs de Xiangqi. Éthique : 35mm.", coords: [40.7145, -74.0001] },
+                    { time: "13:00", type: "Déjeuner", location: "North Dumpling", desc: "10 raviolis pour 4 $. On mange vite.", coords: [40.7152, -73.9898] },
+                    { time: "14:00", type: "Street Photo", location: "Lower East Side", desc: "Orchard/Delancey. Choc des cultures (brique vs verre).", coords: [40.7183, -73.9894] },
+                    { time: "15:15", type: "Transit", location: "Lignes J ou Z", desc: "Direction Downtown jusqu'à Fulton St. (~15 min).", coords: [40.7183, -73.9881] },
+                    { time: "15:30", type: "Architecture", location: "L'Oculus & WTC", desc: "L'épine de Calatrava. Silhouettes nettes sur le marbre.", coords: [40.7118, -74.0112] },
+                    { time: "16:45", type: "Street Photo", location: "Stone Street", desc: "La plus ancienne rue pavée. Lumière rase sur les courtiers.", coords: [40.7038, -74.0105] },
+                    { time: "18:15", type: "Street Photo", location: "Staten Isl. Ferry", desc: "Heure dorée. À la proue au retour pour la skyline.", coords: [40.7013, -74.0135] },
+                    { time: "19:30", type: "Transit", location: "Ligne 1 ou R/W", desc: "Remontée vers Midtown pour l'énergie du centre.", coords: [40.7600, -73.9830] },
+                    { time: "20:30", type: "Dîner", location: "The Halal Guys", desc: "Le stand d'origine sur la 53ème. Le jaune vif rend magnifiquement.", coords: [40.7618, -73.9793] }
+                ]
+            },
+            {
+                day: 4, date: "Mardi 28 Avril", title: "La Nature et le Vertige Vertical",
+                desc: "Échelle et ombres portées avec les cerisiers en toile de fond.",
+                points: [
+                    { time: "07:30", type: "Street Photo", location: "Central Park", desc: "Branches comme cadre pour Billionaires' Row.", coords: [40.7850, -73.9638] },
+                    { time: "11:30", type: "Street Photo", location: "The Met", desc: "Théâtre social de premier plan (Marches 82e).", coords: [40.7794, -73.9632] },
+                    { time: "13:00", type: "Déjeuner", location: "Gray's Papaya", desc: "Service brutal et efficace.", coords: [40.7790, -73.9818] },
+                    { time: "14:00", type: "Street Photo", location: "5ème Avenue", desc: "La 'pêche' au rayon de soleil.", coords: [40.7628, -73.9743] },
+                    { time: "16:30", type: "Street Photo", location: "Grand Central", desc: "Vitesse à 1/4s. Marée humaine.", coords: [40.7527, -73.9772] },
+                    { time: "18:30", type: "Street Photo", location: "Tudor City Bridge", desc: "Alignement solaire (quasi-Manhattanhenge).", coords: [40.7486, -73.9701] },
+                    { time: "20:30", type: "Dîner", location: "Empanada Mama", desc: "Énergie folle garantie dans Hell's Kitchen.", coords: [40.7632, -73.9880] }
+                ]
+            },
+            {
+                day: 5, date: "Mercredi 29 Avril", title: "La Diagonale du Diable (Piéton)",
+                desc: "Tu vas scier Manhattan en deux, du Nord au Sud, en suivant la seule avenue qui casse la grille : Broadway.",
+                points: [
+                    { time: "08:30", type: "Petit-Déj", location: "Brooklyn Diner", desc: "Esthétique classique du 'diner' avant la grande marche.", coords: [40.7660, -73.9805] },
+                    { time: "09:30", type: "Street Photo", location: "Columbus Circle", desc: "Flux tendu des banlieusards sortant du métro.", coords: [40.7681, -73.9819] },
+                    { time: "10:30", type: "Street Photo", location: "Times Square", desc: "Lumière crue des panneaux LED. Cherche l'aliénation.", coords: [40.7580, -73.9855] },
+                    { time: "12:30", type: "Déjeuner", location: "Los Tacos No.1", desc: "Le meilleur taco debout de Manhattan.", coords: [40.7570, -73.9875] },
+                    { time: "13:30", type: "Street Photo", location: "Garment / Herald Sq", desc: "Manutentionnaires et portants de vêtements au milieu du trafic.", coords: [40.7510, -73.9890] },
+                    { time: "15:30", type: "Street Photo", location: "SoHo (Prince/Bway)", desc: "Reflets des vitrines de luxe pour superposer mannequins et passants.", coords: [40.7235, -73.9981] },
+                    { time: "17:30", type: "Street Photo", location: "TriBeCa", desc: "Rues pavées, lumière dorée sur anciens entrepôts.", coords: [40.7180, -74.0070] },
+                    { time: "19:30", type: "Dîner", location: "The Odeon", desc: "Institution de TriBeCa. Néons rouges et ambiance cinématique.", coords: [40.7163, -74.0075] },
+                    { time: "21:00", type: "Retour", location: "Ligne 1 ou 2/3", desc: "Retour bien mérité vers l'UWS.", coords: [40.7170, -74.0090] }
+                ]
+            },
+            {
+                day: 6, date: "Jeudi 30 Avril", title: "Fer Forgé et Néons Cyberpunk",
+                desc: "Contraste : l'architecture intemporelle le matin et le néon la nuit.",
+                points: [
+                    { time: "09:00", type: "Petit-Déj", location: "Deli local", desc: "Le fameux BEC (Bacon, Egg and Cheese).", coords: [40.7230, -73.9980] },
+                    { time: "10:00", type: "Street Photo", location: "Lower Manhattan", desc: "Architecture et reflets matinaux (Mercer ou Greene).", coords: [40.7245, -74.0000] },
+                    { time: "12:30", type: "Street Photo", location: "Washington Sq", desc: "Le chaos organisé : jazz, échecs, skateboarders.", coords: [40.7308, -73.9973] },
+                    { time: "13:30", type: "Déjeuner", location: "Mamoun's Falafel", desc: "On mange en marchant.", coords: [40.7300, -74.0006] },
+                    { time: "14:30", type: "Transit", location: "Lignes M ou J", desc: "Métro vers Brooklyn.", coords: [40.7060, -73.9550] },
+                    { time: "16:00", type: "Street Photo", location: "S Williamsburg", desc: "Silhouettes sombres et bus scolaires. Superposition.", coords: [40.7029, -73.9577] },
+                    { time: "18:30", type: "Dîner", location: "Gottlieb's", desc: "Deli casher historique. Sandwich pastrami.", coords: [40.7107, -73.9577] },
+                    { time: "20:00", type: "Street Photo", location: "Koreatown", desc: "Tranchée de néons de K-Town. Pur Cyberpunk.", coords: [40.7477, -73.9869] }
+                ]
+            },
+            {
+                day: 7, date: "Vendredi 1er Mai", title: "L'Axe Ouest (Flânerie Continue)",
+                desc: "Finis les zigzags. Tu commences au milieu de Manhattan et glisses vers le sud-ouest.",
+                points: [
+                    { time: "09:00", type: "Petit-Déj", location: "S&P Sandwich Shop", desc: "Comptoir à l'ancienne parfait avant d'attaquer.", coords: [40.7410, -73.9895] },
+                    { time: "10:00", type: "Street Photo", location: "Flatiron / Madison", desc: "Chercher l'humour visuel. Zone des vents croisés.", coords: [40.7411, -73.9897] },
+                    { time: "12:00", type: "Street Photo", location: "Chelsea", desc: "Galeries d'art, anciens entrepôts. Public très pointu.", coords: [40.7465, -74.0014] },
+                    { time: "13:30", type: "Déjeuner", location: "Joe's Pizza", desc: "La slice classique de Manhattan dans West Village.", coords: [40.7306, -74.0021] },
+                    { time: "14:30", type: "Street Photo", location: "West Village", desc: "Le labyrinthe. Ombres portées de la végétation sur la brique.", coords: [40.7358, -74.0036] },
+                    { time: "17:00", type: "Événement Art", location: "Whitney Museum", desc: "Interaction absurde entre visiteurs et art contemporain.", coords: [40.7396, -74.0089] },
+                    { time: "20:30", type: "Dîner", location: "Corner Bistro", desc: "Pub historique sombre et bruyant. Légendaire Bistro Burger.", coords: [40.7378, -74.0038] },
+                    { time: "21:30", type: "Street Photo", location: "Meatpacking", desc: "Lumière crue des clubs contrastant avec les anciennes usines.", coords: [40.7405, -74.0076] }
+                ]
+            },
+            {
+                day: 8, date: "Samedi 2 Mai", title: "Cœur Ouvrier et Départ",
+                desc: "Exit Coney Island. On sécurise autour de Penn Station pour un départ l'esprit libre.",
+                points: [
+                    { time: "08:30", type: "Logistique", location: "HI NYC -> Penn St", desc: "Check-out. Métro avec les affaires vers Penn Station.", coords: [40.7505, -73.9934] },
+                    { time: "09:15", type: "Consigne", location: "Bounce / LuggageHero", desc: "Lâche ton sac, appareil en bandoulière !", coords: [40.7510, -73.9930] },
+                    { time: "09:30", type: "Street Photo", location: "Garment District", desc: "Le cœur ouvrier. Vapeur, trafic, NY des années 70.", coords: [40.7535, -73.9910] },
+                    { time: "11:30", type: "Street Photo", location: "Hudson Yards", desc: "Le 'Vessel', les tours de verre. Architecture hyper-moderne.", coords: [40.7540, -74.0010] },
+                    { time: "13:30", type: "Déjeuner", location: "Tick Tock Diner", desc: "Gigantesque, situé au pied de Penn Station pour maîtriser ton temps.", coords: [40.7523, -73.9933] },
+                    { time: "15:00", type: "Logistique", location: "Penn Station", desc: "Récupération des bagages tranquillement.", coords: [40.7505, -73.9934] },
+                    { time: "16:00", type: "Transit", location: "NJ Transit", desc: "Direction EWR.", coords: [40.7505, -73.9934] },
+                    { time: "17:00", type: "Départ", location: "Aéroport EWR", desc: "Dépôt bagages, vol à 20h25.", coords: [40.6895, -74.1745] }
+                ]
+            }
+        ];
 
-    // --- ICONS & LOGIC ---
-    const typeIcons = {
-      "Street Photo": "ph-camera", "Petit-Déj": "ph-coffee", "Déjeuner": "ph-hamburger",
-      "Dîner": "ph-pizza", "Transit": "ph-train-simple", "Atterrissage": "ph-airplane-landing",
-      "Départ": "ph-airplane-takeoff", "Check-in": "ph-suitcase", "Repos": "ph-bed",
-      "Art": "ph-palette", "Architecture": "ph-buildings", "Logistique": "ph-backpack", "Photo": "ph-camera"
-    };
+        // --- GLOBAL VARIABLES ---
+        let map;
+        let markersGroup;
+        let userLocationMarker;
+        let currentDayIndex = 0;
 
-    const createGlassMarker = (isPhoto, number) => {
-      const glowColor = isPhoto ? '168, 192, 255' : '255, 255, 255';
-      const bgClass = isPhoto ? 'iridescent-bg' : 'bg-white/20';
+        let checklist = JSON.parse(localStorage.getItem('nyc-checklist')) || {};
 
-      return L.divIcon({
-        className: 'custom-glass-icon',
-        html: `
-                    <div class="relative flex items-center justify-center w-8 h-8 cursor-pointer group">
-                        <div class="marker-number">${number}</div>
-                        <div class="absolute inset-0 rounded-full ${bgClass} opacity-50 blur-md group-hover:opacity-100 transition-opacity"></div>
-                        <div class="relative w-4 h-4 rounded-full bg-white border-2 border-transparent shadow-[0_0_10px_rgba(${glowColor},0.8)]"></div>
+        let isTimelineOpen = false;
+        function toggleTimeline() {
+            isTimelineOpen = !isTimelineOpen;
+            const list = document.getElementById('timeline-list');
+            const icon = document.getElementById('timeline-toggle-icon');
+            if (isTimelineOpen) {
+                list.classList.remove('hidden');
+                icon.classList.remove('rotate-180');
+            } else {
+                list.classList.add('hidden');
+                icon.classList.add('rotate-180');
+            }
+        }
+
+        // --- ICONS & CATEGORIES LOGIC ---
+        const typeIcons = {
+            "Street Photo": "ph-camera", "Petit-Déj": "ph-coffee", "Déjeuner": "ph-hamburger",
+            "Dîner": "ph-pizza", "Transit": "ph-train-simple", "Atterrissage": "ph-airplane-landing",
+            "Départ": "ph-airplane-takeoff", "Check-in": "ph-suitcase", "Repos": "ph-bed",
+            "Événement Art": "ph-palette", "Photo": "ph-camera", "Architecture": "ph-buildings", "Logistique": "ph-backpack", "Consigne": "ph-lock-key"
+        };
+
+        const getCategoryData = (type) => {
+            if (['Street Photo', 'Photo', 'Architecture', 'Événement Art'].includes(type)) return { hex: '#1e293b' }; // Slate 800
+            if (['Petit-Déj', 'Déjeuner', 'Dîner'].includes(type)) return { hex: '#ea580c' }; // Orange 600
+            if (['Transit', 'Atterrissage', 'Départ', 'Retour'].includes(type)) return { hex: '#2563eb' }; // Blue 600
+            return { hex: '#059669' }; // Emerald 600
+        };
+
+        const createClassicMarker = (cat, number) => {
+            return L.divIcon({
+                className: 'custom-classic-icon',
+                html: `
+                    <div class="relative flex items-center justify-center w-7 h-7 md:w-8 md:h-8 cursor-pointer shadow-lg rounded-full border-2 border-white transition-transform duration-300 hover:scale-110" style="background-color: ${cat.hex};">
+                        <span class="text-white font-bold text-xs">${number}</span>
                     </div>
                 `,
-        iconSize: [32, 32],
-        iconAnchor: [16, 16],
-        popupAnchor: [0, -16]
-      });
-    };
+                iconSize: [32, 32],
+                iconAnchor: [16, 16],
+                popupAnchor: [0, -16]
+            });
+        };
 
-    function initApp() {
-      initMap();
-      renderDaySelector();
-      selectDay(0);
+        function initApp() {
+            initMap();
+            renderDaySelector();
+            selectDay(0);
+            renderBudgetTracker();
 
-      setTimeout(() => {
-        document.getElementById('day-panel').classList.remove('opacity-0', 'translate-y-4');
-      }, 100);
-    }
-
-    function initMap() {
-      map = L.map('map', { zoomControl: false }).setView([40.7580, -73.9855], 12);
-
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; OpenStreetMap contributors',
-        subdomains: 'abcd',
-        maxZoom: 20
-      }).addTo(map);
-
-      markersGroup = L.featureGroup().addTo(map);
-    }
-
-    function renderDaySelector() {
-      const container = document.getElementById('day-selector');
-      itinerary.forEach((dayData, index) => {
-        const btn = document.createElement('button');
-        btn.className = `px-5 py-2.5 rounded-full text-sm font-semibold transition-all whitespace-nowrap duration-300 `;
-        btn.innerHTML = `Jour ${dayData.day}`;
-        btn.onclick = () => selectDay(index);
-        btn.id = `btn-day-${index}`;
-        container.appendChild(btn);
-      });
-    }
-
-    function updateDaySelector() {
-      itinerary.forEach((_, index) => {
-        const btn = document.getElementById(`btn-day-${index}`);
-        if (index === currentDayIndex) {
-          btn.className = 'px-5 py-2.5 rounded-full text-sm font-bold transition-all whitespace-nowrap duration-300 iridescent-bg text-black shadow-lg scale-105';
-        } else {
-          btn.className = 'px-5 py-2.5 rounded-full text-sm font-medium transition-all whitespace-nowrap duration-300 text-white/60 hover:text-white hover:bg-white/10';
+            setTimeout(() => {
+                document.getElementById('day-panel').classList.remove('opacity-0', 'translate-y-4');
+            }, 100);
         }
-      });
-    }
 
-    function selectDay(index) {
-      currentDayIndex = index;
-      const dayData = itinerary[index];
+        function initMap() {
+            map = L.map('map', { zoomControl: false }).setView([40.7580, -73.9855], 12);
 
-      const panel = document.getElementById('day-panel');
-      panel.classList.add('opacity-50', 'scale-[0.98]');
+            const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const theme = isDark ? 'dark_all' : 'light_all';
 
-      setTimeout(() => {
-        document.getElementById('day-date').innerText = dayData.date;
-        document.getElementById('day-title').innerText = dayData.title;
-        document.getElementById('day-desc').innerText = dayData.desc;
+            // Carto (Auto Theme)
+            const tileLayer = L.tileLayer(`https://{s}.basemaps.cartocdn.com/${theme}/{z}/{x}/{y}{r}.png`, {
+                attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+                subdomains: 'abcd',
+                maxZoom: 20
+            }).addTo(map);
 
-        updateDaySelector();
-        renderTimeline(dayData);
-        updateMap(dayData);
+            if (window.matchMedia) {
+                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+                    const newTheme = event.matches ? 'dark_all' : 'light_all';
+                    tileLayer.setUrl(`https://{s}.basemaps.cartocdn.com/${newTheme}/{z}/{x}/{y}{r}.png`);
+                });
+            }
 
-        document.getElementById('timeline-list').scrollTop = 0;
-        panel.classList.remove('opacity-50', 'scale-[0.98]');
-      }, 200);
-    }
+            // Location Control Button
+            const locationControl = L.control({ position: 'bottomright' });
+            locationControl.onAdd = function () {
+                const div = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+                div.innerHTML = `<a href="#" title="Ma position" class="text-blue-400 flex items-center justify-center transition-colors border-none shadow-xl rounded-lg" style="width: 40px; height: 40px; background: rgba(30,30,40,0.9); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.2) !important; color: #60a5fa;" onclick="event.preventDefault(); locateUser();"><i class="ph ph-crosshair text-2xl z-20"></i></a>`;
+                return div;
+            };
+            locationControl.addTo(map);
 
-    function renderTimeline(dayData) {
-      const list = document.getElementById('timeline-list');
-      list.innerHTML = '<div class="timeline-track"></div>';
+            userLocationMarker = L.circleMarker([-1000, -1000], {
+                radius: 8,
+                fillColor: "#3b82f6",
+                color: "#ffffff",
+                weight: 3,
+                opacity: 1,
+                fillOpacity: 1
+            });
 
-      dayData.points.forEach((point, i) => {
-        const iconClass = typeIcons[point.type] || "ph-map-pin";
-        const isPhoto = point.type.includes('Photo') || point.type === "Architecture";
+            markersGroup = L.featureGroup().addTo(map);
+        }
 
-        const html = `
-                    <div class="relative pl-12 py-4 cursor-pointer group" onclick="focusOnMap(${point.coords[0]}, ${point.coords[1]}, ${i})">
-                        <div class="absolute left-0 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center z-10 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6">
-                            <div class="absolute inset-2 rounded-full ${isPhoto ? 'iridescent-bg' : 'bg-white/10'} opacity-30 backdrop-blur-md"></div>
-                            <i class="ph ${iconClass} text-xl ${isPhoto ? 'text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]' : 'text-white/70'} relative z-10"></i>
+        function locateUser() {
+            if (!navigator.geolocation) {
+                alert("La géolocalisation n'est pas supportée par votre navigateur.");
+                return;
+            }
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    map.flyTo([lat, lng], 15, { animate: true, duration: 1.5 });
+                    userLocationMarker.setLatLng([lat, lng]);
+                    if (!map.hasLayer(userLocationMarker)) {
+                        userLocationMarker.addTo(map);
+                    }
+                },
+                () => alert("Impossible de récupérer votre position. Avez-vous refusé la permission GPS ?"),
+                { enableHighAccuracy: true }
+            );
+        }
+
+        function renderDaySelector() {
+            const container = document.getElementById('day-selector');
+            itinerary.forEach((dayData, index) => {
+                const btn = document.createElement('button');
+                btn.className = `px-4 py-2 md:px-5 md:py-2.5 rounded-full text-xs md:text-sm font-semibold transition-all whitespace-nowrap duration-300 snap-center `;
+                btn.innerHTML = `Jour ${dayData.day}`;
+                btn.onclick = () => selectDay(index);
+                btn.id = `btn-day-${index}`;
+                container.appendChild(btn);
+            });
+        }
+
+        function updateDaySelector() {
+            itinerary.forEach((_, index) => {
+                const btn = document.getElementById(`btn-day-${index}`);
+                if (index === currentDayIndex) {
+                    btn.className = 'px-4 py-2 md:px-5 md:py-2.5 rounded-full text-xs md:text-sm font-bold transition-all whitespace-nowrap duration-300 bg-slate-800 text-white shadow-lg scale-105 snap-center';
+                    btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                } else {
+                    btn.className = 'px-4 py-2 md:px-5 md:py-2.5 rounded-full text-xs md:text-sm font-medium transition-all whitespace-nowrap duration-300 text-white/60 hover:text-white hover:bg-white/10 snap-center';
+                }
+            });
+        }
+
+        function selectDay(index) {
+            currentDayIndex = index;
+            const dayData = itinerary[index];
+
+            const panel = document.getElementById('day-panel');
+            panel.classList.add('opacity-50', 'scale-[0.98]');
+
+            setTimeout(() => {
+                document.getElementById('day-date').innerText = dayData.date;
+                document.getElementById('day-title').innerText = dayData.title;
+                document.getElementById('day-desc').innerText = dayData.desc;
+
+                updateDaySelector();
+                renderTimeline(dayData);
+                updateMap(dayData);
+
+                document.getElementById('timeline-list').scrollTop = 0;
+                panel.classList.remove('opacity-50', 'scale-[0.98]');
+            }, 200);
+        }
+
+        function toggleStepCheck(dayIdx, pointIdx, event) {
+            if (event) event.stopPropagation();
+            const key = `d${dayIdx}_p${pointIdx}`;
+            checklist[key] = !checklist[key];
+            localStorage.setItem('nyc-checklist', JSON.stringify(checklist));
+            selectDay(currentDayIndex);
+        }
+
+        function renderTimeline(dayData) {
+            const list = document.getElementById('timeline-list');
+            list.innerHTML = '<div class="timeline-track"></div>';
+
+            dayData.points.forEach((point, i) => {
+                const iconClass = typeIcons[point.type] || "ph-map-pin";
+                const cat = getCategoryData(point.type);
+                const isChecked = checklist[`d${currentDayIndex}_p${i}`];
+
+                const html = `
+                    <div class="relative pl-10 md:pl-12 py-3 md:py-4 cursor-pointer group transition-all duration-300 ${isChecked ? 'opacity-40 grayscale' : ''}" onclick="focusOnMap(${point.coords[0]}, ${point.coords[1]}, ${i})">
+                        <div class="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center z-10 transition-transform duration-300 group-hover:scale-110">
+                            <div class="absolute inset-2 md:inset-2.5 rounded-full shadow-md" style="background-color: ${cat.hex};"></div>
+                            ${isChecked ? '<i class="ph-fill ph-check-circle text-xl md:text-2xl text-emerald-400 relative z-10 bg-black rounded-full" style="box-shadow: 0 0 0 2px #000;"></i>' : `<i class="ph ${iconClass} text-base md:text-lg text-white relative z-10"></i>`}
                         </div>
                         
-                        <div class="bg-white/5 border border-white/5 rounded-2xl p-4 backdrop-blur-sm transition-colors group-hover:bg-white/10 group-hover:border-white/20">
-                            <div class="flex items-center justify-between mb-1">
-                                <span class="font-semibold text-white tracking-wide">${point.location}</span>
-                                <span class="text-xs font-mono font-bold ${isPhoto ? 'iridescent-text' : 'text-white/50'}">${point.time}</span>
+                        <div class="bg-white/5 border border-white/5 rounded-2xl p-3 md:p-4 backdrop-blur-sm transition-colors group-hover:bg-white/10 group-hover:border-white/20">
+                            <div class="flex items-center justify-between mb-1 gap-2">
+                                <span class="font-semibold text-white tracking-wide text-xs md:text-sm truncate ${isChecked ? 'line-through text-white/50' : ''}">${point.location}</span>
+                                <span class="text-[10px] md:text-xs font-mono font-bold text-slate-300 shrink-0">${point.time}</span>
                             </div>
-                            <div class="flex gap-2 mb-2">
-                                <span class="text-[9px] uppercase font-black bg-indigo-500/80 text-white px-1.5 rounded-sm">Étape ${i + 1}</span>
-                                <span class="text-[9px] uppercase tracking-wider px-2 bg-black/40 text-white/70 rounded-full border border-white/10">${point.type}</span>
+                            <div class="flex gap-2 mb-2 items-center flex-wrap">
+                                <span class="text-[8px] md:text-[9px] uppercase font-black bg-white/10 text-white px-1.5 py-0.5 rounded-sm shrink-0">Étape ${i + 1}</span>
+                                <span class="text-[8px] md:text-[9px] uppercase tracking-wider px-2 py-0.5 text-white/90 rounded-full border shrink-0" style="background-color: ${cat.hex}aa; border-color: ${cat.hex}">${point.type}</span>
+                                
+                                <button onclick="toggleStepCheck(${currentDayIndex}, ${i}, event)" class="ml-auto text-[10px] font-bold px-2 py-0.5 rounded-md transition-colors ${isChecked ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-white/5 text-white/50 border border-white/10 hover:bg-white/10'}">
+                                    ${isChecked ? '<i class="ph ph-check"></i> Validé' : '<i class="ph ph-circle"></i> Viser'}
+                                </button>
                             </div>
-                            <p class="text-xs text-white/60 leading-relaxed group-hover:text-white/80 transition-colors">${point.desc}</p>
+                            <p class="text-[10px] md:text-xs text-white/60 leading-relaxed transition-colors mb-3">${point.desc}</p>
+                            
+                            <div class="flex flex-wrap items-center gap-2" onclick="event.stopPropagation()">
+                                <a href="https://www.google.com/maps/search/?api=1&query=${point.coords[0]},${point.coords[1]}" target="_blank" class="flex items-center gap-1 px-2 py-1 bg-black/20 hover:bg-black/40 rounded border border-white/10 text-[10px] text-white/80 transition-all backdrop-blur-md">
+                                    <i class="ph ph-map-trifold"></i> Maps
+                                </a>
+                                <a href="https://citymapper.com/directions?endcoord=${point.coords[0]},${point.coords[1]}&endname=${encodeURIComponent(point.location)}" target="_blank" class="flex items-center gap-1 px-2 py-1 bg-black/20 hover:bg-black/40 rounded border border-white/10 text-[10px] text-white/80 transition-all backdrop-blur-md">
+                                    <i class="ph ph-train"></i> Citymapper
+                                </a>
+                            </div>
                         </div>
                     </div>
                 `;
-        list.insertAdjacentHTML('beforeend', html);
-      });
-    }
+                list.insertAdjacentHTML('beforeend', html);
+            });
+        }
 
-    let currentMarkers = [];
+        function updateMap(dayData) {
+            markersGroup.clearLayers();
+            currentMarkers = [];
+            const points = [];
 
-    function updateMap(dayData) {
-      markersGroup.clearLayers();
-      currentMarkers = [];
-      const points = [];
+            dayData.points.forEach((point, i) => {
+                const cat = getCategoryData(point.type);
+                const marker = L.marker(point.coords, { icon: createClassicMarker(cat, i + 1) });
 
-      dayData.points.forEach((point, i) => {
-        const isPhoto = point.type.includes('Photo') || point.type === "Architecture";
-        const marker = L.marker(point.coords, {
-          icon: createGlassMarker(isPhoto, i + 1)
-        });
+                const escapedLocation = point.location.replace(/'/g, "\\'");
+                const escapedDesc = point.desc.replace(/'/g, "\\'");
 
-        const popupContent = `
+                const popupContent = `
                     <div class="font-sans">
-                        <div class="text-[10px] font-bold uppercase tracking-wider mb-1 opacity-70 flex justify-between">
-                            <span>${point.time}</span>
-                            <span>${point.type}</span>
+                        <div class="text-[9px] font-bold uppercase tracking-wider mb-1.5 flex justify-between items-center" style="color: ${cat.hex}">
+                            <span><i class="ph ph-clock mr-1"></i>${point.time}</span>
+                            <span class="px-1.5 rounded text-white" style="background-color: ${cat.hex}">${point.type}</span>
                         </div>
-                        <h3 class="text-base font-bold mb-1 text-white">${point.location}</h3>
-                        <p class="text-xs leading-relaxed text-white/80">${point.desc}</p>
+                        <h3 class="text-sm font-bold mb-1 text-white">${point.location}</h3>
+                        <p class="text-[10px] leading-relaxed text-white/70">${point.desc}</p>
+                        
+                        <div class="mt-2 pt-2 border-t border-white/10 flex gap-2 flex-wrap">
+                            <a href="https://www.google.com/maps/search/?api=1&query=${point.coords[0]},${point.coords[1]}" target="_blank" class="text-[10px] bg-white/10 hover:bg-white/20 px-1.5 py-1 rounded text-white transition-colors flex items-center gap-1"><i class="ph ph-map-trifold"></i> Maps</a>
+                            <a href="https://citymapper.com/directions?endcoord=${point.coords[0]},${point.coords[1]}&endname=${encodeURIComponent(point.location)}" target="_blank" class="text-[10px] bg-white/10 hover:bg-white/20 px-1.5 py-1 rounded text-white transition-colors flex items-center gap-1"><i class="ph ph-train"></i> Citymapper</a>
+                            <button onclick="openGeminiInspiration('${escapedLocation}', '${point.time}', '${escapedDesc}', '${point.type}')" class="btn-ai w-full mt-1 flex items-center justify-center gap-1 px-1.5 py-1 rounded text-[10px] text-white font-medium">
+                                <i class="ph ph-sparkle"></i> Conseils Photo IA ✨
+                            </button>
+                        </div>
                     </div>
                 `;
 
-        marker.bindPopup(popupContent, {
-          closeButton: false,
-          className: 'glass-popup'
-        });
+                marker.bindPopup(popupContent, { closeButton: false, className: 'glass-popup', autoPanPaddingTopLeft: L.point(0, 150) });
+                markersGroup.addLayer(marker);
+                currentMarkers.push(marker);
+                points.push(point.coords);
+            });
 
-        markersGroup.addLayer(marker);
-        currentMarkers.push(marker);
-        points.push(point.coords);
-      });
+            if (points.length > 1) {
+                L.polyline(points, { color: '#111111', weight: 3, opacity: 0.6, dashArray: '5, 10', lineCap: 'round' }).addTo(markersGroup);
+            }
 
-      if (points.length > 1) {
-        // Thicker, glowing path line for better readability
-        L.polyline(points, {
-          color: '#a8c0ff',
-          weight: 3,
-          opacity: 0.8,
-          dashArray: '5, 10',
-          lineCap: 'round'
-        }).addTo(markersGroup);
-      }
+            if (points.length > 0) {
+                const isMobile = window.innerWidth < 768;
+                map.flyToBounds(markersGroup.getBounds(), { padding: isMobile ? [40, 80] : [80, 80], maxZoom: 15, duration: 1.5 });
+            }
+        }
 
-      if (points.length > 0) {
-        map.flyToBounds(markersGroup.getBounds(), { padding: [80, 80], maxZoom: 15, duration: 1.5 });
-      }
-    }
+        function focusOnMap(lat, lng, index) {
+            map.flyTo([lat, lng], 16, { animate: true, duration: 1.2 });
+            if (currentMarkers[index]) setTimeout(() => currentMarkers[index].openPopup(), 1200);
+        }
 
-    function focusOnMap(lat, lng, index) {
-      map.flyTo([lat, lng], 16, {
-        animate: true,
-        duration: 1.2
-      });
 
-      if (currentMarkers[index]) {
-        setTimeout(() => {
-          currentMarkers[index].openPopup();
-        }, 1200);
-      }
-    }
+        // --- BUDGET TRACKER LOGIC (PAR DÉPENSE UNIQUE) ---
+        const budgetItems = [
+            { id: 'logement', cat: 'bed', color: 'indigo-400', name: 'Hébergement (HI NYC 7 nuits)', planned: 551.00, actual: null },
+            { id: 't_aller', cat: 'airplane', color: 'blue-400', name: 'Transport: Aéroport EWR (Aller)', planned: 23.75, actual: null },
+            { id: 't_omny', cat: 'train', color: 'blue-400', name: 'Transport: Pass OMNY 7 Jours', planned: 34.00, actual: null },
+            { id: 't_retour', cat: 'airplane-takeoff', color: 'blue-400', name: 'Transport: Trajets J8 & Retour EWR', planned: 32.45, actual: null },
+            { id: 'f_j1', cat: 'pizza', color: 'orange-400', name: 'J1 Repas: Taqueria y Fonda', planned: 13.00, actual: null },
+            { id: 'f_j2', cat: 'pizza', color: 'orange-400', name: 'J2 Repas: Zucker\'s, Smorgas, F&F', planned: 36.00, actual: null },
+            { id: 'f_j3', cat: 'pizza', color: 'orange-400', name: 'J3 Repas: John\'s, Dumpling, Halal', planned: 34.00, actual: null },
+            { id: 'f_j4', cat: 'pizza', color: 'orange-400', name: 'J4 Repas: Gray\'s, Empanada Mama', planned: 34.00, actual: null },
+            { id: 'f_j5', cat: 'pizza', color: 'orange-400', name: 'J5 Repas: Daily Prov, 2 Bros, Birria', planned: 30.00, actual: null },
+            { id: 'f_j6', cat: 'pizza', color: 'orange-400', name: 'J6 Repas: Deli, Mamoun\'s, Gottlieb\'s', planned: 40.00, actual: null },
+            { id: 'f_j7', cat: 'pizza', color: 'orange-400', name: 'J7 Repas: Amy Ruth\'s, Burger', planned: 53.00, actual: null },
+            { id: 'f_j8', cat: 'pizza', color: 'orange-400', name: 'J8 Repas: Nathan\'s Famous', planned: 23.00, actual: null },
+            { id: 'f_marge', cat: 'coffee', color: 'orange-400', name: 'Marge Nourriture: Snacks & Cafés', planned: 40.00, actual: null },
+            { id: 'l_consigne', cat: 'backpack', color: 'emerald-400', name: 'Logistique: Consigne Bagages J8', planned: 10.00, actual: null },
+            { id: 'l_cash', cat: 'lifebuoy', color: 'pink-400', name: 'Imprévus: Cash de Sécurité', planned: 20.00, actual: null }
+        ];
 
-    window.onload = initApp;
-  </script>
+        function renderBudgetTracker() {
+            const list = document.getElementById('expense-list');
+            list.innerHTML = '';
+
+            budgetItems.forEach((item, index) => {
+                const hasActual = item.actual !== null && item.actual !== '';
+                const actualVal = hasActual ? parseFloat(item.actual) : 0;
+                const diff = item.planned - actualVal;
+
+                let diffHtml = '<span class="text-white/30">-</span>';
+                if (hasActual) {
+                    diffHtml = diff >= 0
+                        ? `<span class="text-emerald-400">+$${diff.toFixed(2)}</span>`
+                        : `<span class="text-red-400">-$${Math.abs(diff).toFixed(2)}</span>`;
+                }
+
+                const html = `
+                    <div class="flex flex-col md:flex-row md:items-center justify-between p-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-colors">
+                        <div class="flex items-center gap-3 mb-2 md:mb-0 w-full md:w-1/2">
+                            <div class="w-8 h-8 rounded-full bg-black/40 flex items-center justify-center shrink-0 border border-white/5">
+                                <i class="ph ph-${item.cat} text-${item.color} text-lg"></i>
+                            </div>
+                            <span class="text-xs md:text-sm text-white font-medium truncate">${item.name}</span>
+                        </div>
+                        <div class="flex items-center justify-between w-full md:w-1/2 px-2 gap-4">
+                            <div class="text-xs text-white/50 w-16 text-right">$${item.planned.toFixed(2)}</div>
+                            <div class="relative w-24">
+                                <span class="absolute left-2 top-1/2 -translate-y-1/2 text-white/30 text-xs">$</span>
+                                <input type="number" min="0" step="0.01" value="${hasActual ? item.actual : ''}"
+                                       placeholder="0.00"
+                                       class="w-full bg-black/50 border border-white/20 rounded-lg pl-5 pr-2 py-1.5 text-sm text-white font-mono outline-none focus:border-emerald-400 transition-all placeholder:text-white/20"
+                                       oninput="updateExpense(${index}, this.value)">
+                            </div>
+                            <div class="text-xs font-mono font-bold w-16 text-right" id="exp-diff-${index}">${diffHtml}</div>
+                        </div>
+                    </div>
+                `;
+                list.insertAdjacentHTML('beforeend', html);
+            });
+            updateBudgetTotals();
+        }
+
+        function updateExpense(index, value) {
+            budgetItems[index].actual = value;
+
+            // Mise à jour visuelle du différentiel local sans perdre le focus
+            const diffSpan = document.getElementById(`exp-diff-${index}`);
+            if (value === null || value === '') {
+                diffSpan.innerHTML = '<span class="text-white/30">-</span>';
+            } else {
+                const diff = budgetItems[index].planned - parseFloat(value);
+                diffSpan.innerHTML = diff >= 0
+                    ? `<span class="text-emerald-400">+$${diff.toFixed(2)}</span>`
+                    : `<span class="text-red-400">-$${Math.abs(diff).toFixed(2)}</span>`;
+            }
+
+            updateBudgetTotals();
+        }
+
+        function updateBudgetTotals() {
+            let totalPlanned = 0;
+            let totalSpent = 0;
+            let diffOnPaid = 0;
+
+            budgetItems.forEach(item => {
+                totalPlanned += item.planned;
+                if (item.actual !== null && item.actual !== '') {
+                    const actual = parseFloat(item.actual) || 0;
+                    totalSpent += actual;
+                    diffOnPaid += (item.planned - actual);
+                }
+            });
+
+            const remaining = totalPlanned - totalSpent;
+
+            document.getElementById('b-planned').innerText = `$${totalPlanned.toFixed(2)}`;
+            document.getElementById('b-spent').innerText = `$${totalSpent.toFixed(2)}`;
+            document.getElementById('b-rem').innerText = `$${remaining.toFixed(2)}`;
+
+            const diffEl = document.getElementById('b-diff');
+            if (diffOnPaid === 0) {
+                diffEl.innerText = "$0.00";
+                diffEl.className = "text-lg md:text-xl font-mono font-bold text-white/50 transition-colors";
+            } else if (diffOnPaid > 0) {
+                diffEl.innerText = `+$${diffOnPaid.toFixed(2)}`;
+                diffEl.className = "text-lg md:text-xl font-mono font-bold text-emerald-400 transition-colors";
+            } else {
+                diffEl.innerText = `-$${Math.abs(diffOnPaid).toFixed(2)}`;
+                diffEl.className = "text-lg md:text-xl font-mono font-bold text-red-400 transition-colors";
+            }
+        }
+
+        function toggleBudgetModal() {
+            const modal = document.getElementById('budget-modal');
+            const content = modal.querySelector('.modal-content-anim');
+
+            if (modal.classList.contains('modal-hidden')) {
+                renderBudgetTracker();
+                modal.classList.remove('modal-hidden');
+                setTimeout(() => content.classList.remove('scale-95', 'opacity-0'), 10);
+            } else {
+                content.classList.add('scale-95', 'opacity-0');
+                setTimeout(() => modal.classList.add('modal-hidden'), 300);
+            }
+        }
+
+        // --- INIT ---
+        window.onload = initApp;
+    </script>
 </body>
 
 </html>

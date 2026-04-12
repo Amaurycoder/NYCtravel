@@ -1,0 +1,17 @@
+{
+  "name": "NYC Focus Photo",
+  "short_name": "NYC Focus",
+  "description": "Itinéraire Street Photography New York 2026",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#050505",
+  "theme_color": "#050505",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
