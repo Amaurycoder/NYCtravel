@@ -172,12 +172,68 @@
             color: #f472b6;
         }
 
-        /* Remove arrows from number inputs */
-        input[type="number"]::-webkit-inner-spin-button,
-        input[type="number"]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
+        /* --- Login Overlay --- */
+        #auth-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
         }
+
+        #auth-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .auth-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 2rem;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .auth-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            width: 100%;
+            padding: 1rem;
+            border-radius: 1rem;
+            margin-bottom: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .auth-input:focus {
+            border-color: #3b82f6;
+        }
+
+        .auth-button {
+            background: #3b82f6;
+            color: white;
+            width: 100%;
+            padding: 1rem;
+            border-radius: 1rem;
+            font-weight: 700;
+            transition: transform 0.2s ease, background-color 0.3s ease;
+        }
+
+        .auth-button:active {
+            transform: scale(0.98);
+        }
+
+        /* --- Animations --- */
         .premium-map-tiles {
             filter: contrast(1.1) saturate(1.1);
         }
@@ -213,6 +269,30 @@
 
     <!-- The Map (Full Screen) -->
     <div id="map"></div>
+
+    <!-- Login Lock Screen -->
+    <div id="auth-overlay">
+        <div class="auth-card">
+            <div class="w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-6 border border-slate-700">
+                <i class="ph ph-lock-key text-3xl text-blue-400"></i>
+            </div>
+            <h2 class="text-2xl font-bold mb-2">Accès Privé</h2>
+            <p class="text-white/50 text-xs mb-8">Veuillez vous identifier pour accéder à l'itinéraire de voyage.</p>
+            
+            <div class="text-left">
+                <label class="text-[10px] uppercase tracking-widest font-bold text-white/30 ml-2 mb-1 block">Identifiant</label>
+                <input type="text" id="auth-user" class="auth-input" placeholder="ex: Nom d'utilisateur" autocomplete="username">
+                
+                <label class="text-[10px] uppercase tracking-widest font-bold text-white/30 ml-2 mb-1 block">Code Secret</label>
+                <input type="password" id="auth-pass" class="auth-input" placeholder="••••••••" autocomplete="current-password">
+            </div>
+            
+            <button onclick="handleLogin()" class="auth-button mt-4 shadow-lg shadow-blue-500/20">
+                Déverrouiller <i class="ph ph-arrow-right ml-2"></i>
+            </button>
+            <p id="auth-error" class="text-red-400 text-[10px] mt-4 opacity-0 transition-opacity">Identifiants incorrects. Veuillez réessayer.</p>
+        </div>
+    </div>
 
     <!-- UI Overlay container -->
     <div class="fixed inset-0 z-10 pointer-events-none p-3 pb-6 md:p-8 flex flex-col h-[100dvh] w-full">
@@ -1066,7 +1146,40 @@
             });
         };
 
+        // --- ACCESS CONTROL ---
+        const SECRETS = {
+            user: "momal",
+            pass: "jalgsvcqebfadbd1995"
+        };
+
+        function checkAuth() {
+            const isAuth = sessionStorage.getItem('nyc-auth') === 'true';
+            if (!isAuth) {
+                document.getElementById('auth-overlay').classList.remove('hidden');
+                return false;
+            }
+            document.getElementById('auth-overlay').classList.add('hidden');
+            return true;
+        }
+
+        function handleLogin() {
+            const user = document.getElementById('auth-user').value.toLowerCase();
+            const pass = document.getElementById('auth-pass').value;
+            const error = document.getElementById('auth-error');
+
+            if (user === SECRETS.user && pass === SECRETS.pass) {
+                sessionStorage.setItem('nyc-auth', 'true');
+                document.getElementById('auth-overlay').classList.add('hidden');
+                initApp();
+            } else {
+                error.classList.remove('opacity-0');
+                setTimeout(() => error.classList.add('opacity-0'), 3000);
+            }
+        }
+
         function initApp() {
+            if (!checkAuth()) return;
+            
             initMap();
             renderDaySelector();
             selectDay(0);
