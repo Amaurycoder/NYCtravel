@@ -253,10 +253,16 @@
                 padding-bottom: env(safe-area-inset-bottom, 20px);
             }
             .day-selector-container {
-                position: fixed;
-                bottom: calc(env(safe-area-inset-bottom, 0px) + 80px); /* Adjust based on collapsed panel height */
-                z-index: 30;
+                position: relative;
+                bottom: auto;
+                z-index: 60;
+                pointer-events: auto !important;
                 transition: transform 0.3s ease;
+                width: 100%;
+                left: 0;
+                display: flex;
+                justify-content: center;
+                padding-bottom: 0.5rem;
             }
             #timeline-list {
                 max-height: 50vh !important;
@@ -341,6 +347,14 @@
                 <div class="w-10 h-1 rounded-full bg-white/20"></div>
             </div>
 
+            <!-- Day Picker (Moved Inside) -->
+            <div class="day-selector-container px-2 md:px-0">
+                <nav class="glass-pill rounded-full p-1 md:p-2 flex gap-1 overflow-x-auto max-w-full md:max-w-[95vw] shadow-2xl items-center snap-x scroll-smooth"
+                    id="day-selector">
+                    <!-- Injected by JS -->
+                </nav>
+            </div>
+
             <!-- Day Hero (Collapsible Trigger) -->
             <div class="px-4 pb-4 md:p-5 border-b border-white/5 relative shrink-0 cursor-pointer group"
                 onclick="toggleTimeline()">
@@ -374,13 +388,7 @@
             </div>
         </div>
 
-        <!-- Bottom Section (Day Picker Pill) -->
-        <div class="w-full mt-2 md:mt-3 flex justify-center pointer-events-auto shrink-0 z-20 day-selector-container">
-            <nav class="glass-pill rounded-full p-1 md:p-2 flex gap-1 overflow-x-auto max-w-[95vw] shadow-2xl items-center snap-x scroll-smooth"
-                id="day-selector">
-                <!-- Injected by JS -->
-            </nav>
-        </div>
+
     </div>
 
 
