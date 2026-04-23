@@ -558,531 +558,545 @@
         const apiKey = ""; // API Key
 
         const itinerary = [
-                {
-                day: 1, date: "Samedi 25 Avril", title: "L'Immersion et le Choc des Néons",
-                desc: "L'arrivée nocturne est une opportunité idéale pour se familiariser avec l'esthétique électrique de la ville.",
-                points: [
-                    { 
-                        time: "19:15", type: "Atterrissage", location: "Aéroport EWR", 
-                        desc: "Douanes, récupération des bagages.", coords: [40.6895, -74.1745],
-                        longDesc: "Premier contact avec le sol américain. L'architecture fonctionnelle et l'agitation des douanes plantent le décor de la métropole.",
-                        photoTips: "Capturez l'impatience des voyageurs aux douanes. Utilisez les grandes baies vitrées pour des reflets de l'asphalte et des avions.",
-                        shooting: { gear: "Fujifilm", recipe: "CineStill 800T", advice: "Capturez l'ambiance tungstène des terminaux. Cherchez les halos rouges autour des lumières vives." }
-                    },
-                    { 
-                        time: "20:15", type: "Transit", location: "NJ Transit / Ligne 1", 
-                        desc: "Trajet vers Penn Station, puis ligne 1.", coords: [40.7505, -73.9934],
-                        longDesc: "Le centre névralgique souterrain. Une marée humaine constante sous une lumière artificielle dorée et crue.",
-                        photoTips: "Utilisez une vitesse lente (1/10s) pour capturer le flou de mouvement des navetteurs contrastant avec l'architecture rigide des quais.",
-                        shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "Visez le grain et le contraste. Le chaos de Penn Station se prête magnifiquement au noir et blanc." }
-                    },
-                    { 
-                        time: "21:30", type: "Check-in", location: "HI NYC Hostel", 
-                        desc: "Dépôt équipement. Garder un objectif lumineux (f/1.8).", coords: [40.7985, -73.9682],
-                        longDesc: "Votre base dans l'Upper West Side. Un bâtiment historique avec de grands espaces communs.",
-                        photoTips: "Détails architecturaux de la façade en brique rouge. Les dortoirs offrent des points de vue intéressants sur les cours intérieures.",
-                        shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "Utilisez le flash intégré dans les couloirs pour un look 'flash-photo' brut et documentaire." }
-                    },
-                    { 
-                        time: "22:00", type: "Dîner", location: "Taqueria y Fonda", 
-                        desc: "Plats massifs pour caler un estomac après le vol.", coords: [40.8015, -73.9655],
-                        longDesc: "Petit bijou local. Couleurs vives, vapeur sortant de la cuisine et clients serrés au comptoir.",
-                        photoTips: "Intérieur saturé. Photographiez les chefs en action à travers la buée. ISO élevé nécessaire.",
-                        shooting: { gear: "Fujifilm", recipe: "Classic Cuban Negative", advice: "Les tons chauds de cette recette feront ressortir les couleurs des plats et du décor." }
-                    },
-                    { 
-                        time: "23:00", type: "Street Photo", location: "Broadway (UWS)", 
-                        desc: "Rechercher les Bodegas. ISO 3200/6400, sous-exposer.", coords: [40.8000, -73.9680],
-                        longDesc: "L'artère vitale de New York. À cette heure, les néons des bodegas et les phares des taxis créent une atmosphère cinématographique.",
-                        photoTips: "Puddle grams' (reflets dans les flaques) si le sol est humide. Jouez avec les ombres portées des arbres sur les trottoirs éclairés par les vitrines.",
-                        shooting: { gear: "Fujifilm", recipe: "CineStill 800T", advice: "C'est l'essence même du CineStill. Cadrez un taxi jaune sous un néon bleu ou rouge." }
-                    },
-                    { 
-                        time: "00:30", type: "Repos", location: "HI NYC Hostel", 
-                        desc: "Retour pour le réveil matinal.", coords: [40.7985, -73.9682],
-                        longDesc: "Fin de la première immersion. Les lumières s'éteignent doucement sur l'UWS.",
-                        photoTips: "Contrastes forts dans les cages d'escalier de l'hostel. Jeu d'ombres dans les couloirs.",
-                        shooting: { gear: "Fujifilm", recipe: "Kodak Tri-X 400", advice: "Baissez l'exposition pour ne garder que les silhouettes dans les couloirs." }
-                    }
-                ]
+    {
+        day: 1, date: "Samedi 25 Avril", title: "L'Immersion et le Choc des Néons",
+        desc: "L'arrivée nocturne est une opportunité idéale pour se familiariser avec l'esthétique électrique de la ville.",
+        points: [
+            { 
+                time: "19:15", type: "Atterrissage", location: "Aéroport EWR", 
+                desc: "Débarquement, passage des douanes, et récupération des bagages.", coords: [40.6895, -74.1745],
+                longDesc: "Premier contact avec le sol américain. L'architecture fonctionnelle et l'agitation des douanes plantent le décor de la métropole.",
+                photoTips: "Capturez l'impatience des voyageurs aux douanes. Utilisez les grandes baies vitrées pour des reflets de l'asphalte et des avions.",
+                shooting: { gear: "Fujifilm", recipe: "CineStill 800T", advice: "Capturez l'ambiance tungstène des terminaux." }
             },
-            {
-                day: 2, date: "Dimanche 26 Avril", title: "Acier, Béton et Brooklyn",
-                desc: "Le décalage horaire garantit un réveil à l'aube. C'est ton avantage tactique pour DUMBO.",
-                points: [
-                    { 
-                        time: "05:30", type: "Transit", location: "High Street", 
-                        desc: "Ligne 1 vers 59 St, transfert A/C vers Brooklyn.", coords: [40.6993, -73.9904],
-                        longDesc: "Traversée matinale dans les entrailles de la ville. Le bleu du matin commence à filtrer par les bouches d'aération.",
-                        photoTips: "Saisir la solitude des premiers travailleurs. Géométrie des tunnels déserts.",
-                        shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "L'esthétique brute du métro à l'aube est parfaite pour le film argentique." }
-                    },
-                    { 
-                        time: "06:15", type: "Street Photo", location: "DUMBO", 
-                        desc: "Lumière rasante de 6h00. Absence de foule.", coords: [40.7033, -73.9896],
-                        longDesc: "Down Under the Manhattan Bridge Overpass. Le paradis des lignes directrices et des textures industrielles.",
-                        photoTips: "L'iconique Washington St pour cadrer le Manhattan Bridge. À 6h du matin, la lumière est douce et les touristes absents.",
-                        shooting: { gear: "Fujifilm", recipe: "Kodak Portra 400 v2", advice: "Profitez de la lumière douce du matin. Le Portra rendra les briques rouges vibrantes." }
-                    },
-                    { 
-                        time: "07:30", type: "Street Photo", location: "Brooklyn Bridge", 
-                        desc: "Câbles d'acier comme lignes directrices.", coords: [40.7061, -73.9969],
-                        longDesc: "Traversée mythique. Un enchevêtrement de câbles d'acier qui découpent le ciel.",
-                        photoTips: "Utilisez les câbles comme cadres naturels. Cherchez les symétries parfaites. Évitez le plein milieu de journée à cause des ombres dures.",
-                        shooting: { gear: "Fujifilm", recipe: "Kodak Portra 400 v2", advice: "Visez le bleu du ciel contrastant avec le beige des arches en pierre." }
-                    },
-                    { 
-                        time: "09:30", type: "Petit-Déj", location: "Zucker's Bagels", 
-                        desc: "'Everything Bagel' roulé à la main.", coords: [40.7155, -74.0091],
-                        longDesc: "L'odeur du pain frais et du café. Un condensé de la routine matinale new-yorkaise.",
-                        photoTips: "Portraits candides des clients derrière les vitres embuées. Gros plans sur la texture des bagels Everything.",
-                        shooting: { gear: "Fujifilm", recipe: "Kodak Portra 400 v2", advice: "Ambiances chaudes de petit-déjeuner. Posez votre café à côté de votre boîtier pour un shot lifestyle." }
-                    },
-                    { 
-                        time: "10:30", type: "Transit", location: "Grand Army Plaza", 
-                        desc: "Lignes 2/3 depuis Chambers St.", coords: [40.6750, -73.9700],
-                        longDesc: "L'arc de triomphe de Brooklyn. Grandeur européenne au milieu du chaos urbain.",
-                        photoTips: "Architecture symétrique. Utilisez l'arche pour encadrer le passage des bus jaunes.",
-                        shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "L'architecture monumentale ressortira avec beaucoup de force en noir et blanc." }
-                    },
-                    { 
-                        time: "11:30", type: "Photo", location: "Smorgasburg", 
-                        desc: "Portrait candide et fumée gourmande.", coords: [40.6611, -73.9634],
-                        longDesc: "Festival culinaire en plein air. Une explosion de couleurs, de fumées et de visages expressifs.",
-                        photoTips: "Macro sur les plats. Photographie de rue directe : capturez les réactions des gens qui goûtent des saveurs nouvelles.",
-                        shooting: { gear: "Fujifilm", recipe: "Classic Cuban Negative", advice: "Parfait pour les scènes de foule colorées et la nourriture de rue." }
-                    },
-                    { 
-                        time: "14:00", type: "Street Photo", location: "Crown Heights", 
-                        desc: "Mix culturel. Contrastes sous le métro.", coords: [40.6681, -73.9447],
-                        longDesc: "Quartier résidentiel riche en histoire et en contrastes culturels.",
-                        photoTips: "Façades colorées et vie de quartier authentique. Cherchez les interactions entre les différentes communautés.",
-                        shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "Capturez la texture des vieux bâtiments et les portraits de rue 'gritty'." }
-                    },
-                    { 
-                        time: "16:30", type: "Street Photo", location: "Smith-9th St", 
-                        desc: "Station la plus haute. Train + Statue.", coords: [40.6734, -73.9959],
-                        longDesc: "La station de métro la plus haute du monde. Vue plongeante sur les canaux industriels et la skyline.",
-                        photoTips: "Cadrez l'arrivée de la rame de métro avec la Statue de la Liberté au loin (discrète mais présente).",
-                        shooting: { gear: "Fujifilm", recipe: "Kodak Portra 400 v2", advice: "Les teintes bleutées de l'horizon se marieront bien avec la chaleur du Portra." }
-                    },
-                    { 
-                        time: "19:30", type: "Dîner", location: "F&F Pizzeria", 
-                        desc: "Mange debout, shoote la vie de quartier.", coords: [40.6792, -73.9992],
-                        longDesc: "Ambiance de quartier, le four à pizza qui rougeoie dans la nuit tombante.",
-                        photoTips: "Les néons Pizza se reflétant sur le mobilier en inox. Capturez la convivialité des gens qui mangent debout.",
-                        shooting: { gear: "Fujifilm", recipe: "CineStill 800T", advice: "Les lumières du four et du néon pizza créeront des halations magnifiques." }
-                    },
-                    { 
-                        time: "21:00", type: "Retour", location: "HI NYC Hostel", 
-                        desc: "Retour Manhattan (UWS).", coords: [40.7985, -73.9682],
-                        longDesc: "Retour sur l'UWS après une journée intense. Les rues sont calmes.",
-                        photoTips: "Reflets des vitrines sur Broadway. Silhouettes de passants isolés.",
-                        shooting: { gear: "Fujifilm", recipe: "Kodak Tri-X 400", advice: "Jouez avec les forts contrastes des lampadaires." }
-                    }
-                ]
+            { 
+                time: "20:15", type: "Transit", location: "NJ Transit / Ligne 1", 
+                desc: "Trajet ferroviaire de EWR vers Penn Station. Transfert vers Uptown.", coords: [40.7505, -73.9934],
+                longDesc: "Le centre névralgique souterrain. Une marée humaine constante sous une lumière artificielle dorée et crue.",
+                photoTips: "Utilisez une vitesse lente (1/10s) pour capturer le flou de mouvement des navetteurs.",
+                shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "Visez le grain et le contraste." }
             },
-            {
-                day: 3, date: "Lundi 27 Avril", title: "Le Creuset Humain et Géométrie",
-                desc: "Attaque directement dans le vif du sujet en plein cœur du Downtown.",
-                points: [
-                    { 
-                        time: "08:30", type: "Transit", location: "Grand St (LES)", 
-                        desc: "Descente directe de l'UWS vers le Lower East Side.", coords: [40.7183, -73.9930],
-                        longDesc: "L'entrée dans le Lower East Side. Un mélange de vieux bâtiments et de nouvelles structures, parfait pour les couches urbaines.",
-                        photoTips: "Utilisez les bouches de métro pour des cadres de rue. Capturez le contraste entre les briques centenaires et le verre des nouveaux hôtels.",
-                        shooting: { gear: "Fujifilm", recipe: "Kodak Portra 400 v2", advice: "Tons naturels et doux pour le réveil du quartier. Idéal pour les façades en briques." }
-                    },
-                    { 
-                        time: "09:15", type: "Petit-Déj", location: "Kopitiam", 
-                        desc: "Café malaisien légendaire. Démarre plongé dans l'ambiance.", coords: [40.7138, -73.9908],
-                        longDesc: "Café malaisien vibrant. Vapeur, plats colorés et atmosphère authentique. Un condensé de cultures dans un espace restreint.",
-                        photoTips: "Intérieur serré, capturez les portraits au comptoir. Jouez avec la vapeur qui sort du comptoir de préparation.",
-                        shooting: { gear: "Fujifilm", recipe: "Classic Cuban Negative", advice: "La chaleur et la saturation de cette recette feront ressortir la richesse des plats." }
-                    },
-                    { 
-                        time: "10:00", type: "Street Photo", location: "Chinatown", 
-                        desc: "Doyers St. Courbure casse la grille. Ombres dures pour N&B.", coords: [40.7143, -73.9981],
-                        longDesc: "L'une des rues les plus célèbres de Chinatown. Sa courbure unique casse la grille de Manhattan et crée des perspectives uniques.",
-                        photoTips: "Attendez qu'un passant s'engage dans la courbe. Utilisez les ombres portées des vieux bâtiments pour une composition graphique.",
-                        shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "Visez le look historique. Le contraste du noir et blanc souligne la courbure et la texture des pavés." }
-                    },
-                    { 
-                        time: "11:00", type: "Street Photo", location: "Columbus Park", 
-                        desc: "Joueurs de Xiangqi. Éthique : 35mm.", coords: [40.7145, -74.0001],
-                        longDesc: "Le cœur social de Chinatown. Musique traditionnelle, échecs chinois (Xiangqi) et rituels quotidiens de la communauté.",
-                        photoTips: "Portrait candide (soyez discret). Capturez les mains ridées des joueurs de Xiangqi sur le plateau. Utilisez une focale fixe pour être plus proche de l'action.",
-                        shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "Approche documentaire pure. Le noir et blanc donne une dimension intemporelle à ces scènes de vie." }
-                    },
-                    { 
-                        time: "13:00", type: "Déjeuner", location: "North Dumpling", 
-                        desc: "10 raviolis pour 4 $. On mange vite.", coords: [40.7152, -73.9898],
-                        longDesc: "L'essence de la restauration rapide de rue à NY. Étroit, bruyant et incroyablement délicieux.",
-                        photoTips: "Gros plan sur les raviolis fumants à travers la vitrine embuée. Capturez le geste rapide des cuisiniers.",
-                        shooting: { gear: "Fujifilm", recipe: "Classic Cuban Negative", advice: "Parfait pour capturer la vivacité et la saturation des petits commerces de Chinatown." }
-                    },
-                    { 
-                        time: "14:00", type: "Street Photo", location: "Lower East Side", 
-                        desc: "Orchard/Delancey. Choc des cultures (brique vs verre).", coords: [40.7183, -73.9894],
-                        longDesc: "Le quartier historique des immigrants. Un hub artistique où les galeries côtoient les derniers commerces traditionnels.",
-                        photoTips: "Exploitez les 'Fire Escapes' (escaliers de secours) alignés pour des compositions verticales fortes. Cherchez les graffitis qui racontent l'histoire locale.",
-                        shooting: { gear: "Fujifilm", recipe: "Kodak Portra 400 v2", advice: "Bonne gestion des teintes de peau et des couleurs urbaines pour les portraits de rue." }
-                    },
-                    { 
-                        time: "15:15", type: "Transit", location: "Lignes J ou Z", 
-                        desc: "Direction Downtown jusqu'à Fulton St. (~15 min).", coords: [40.7183, -73.9881],
-                        longDesc: "Traversée rapide vers le sud. Les stations surélevées de la ligne J offrent des points de vue intéressants sur les rues en contrebas.",
-                        photoTips: "Shootez à travers les vitres du métro pour des effets de flou et de superposition.",
-                        shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "L'atmosphère brute des wagons du métro est une mine d'or en noir et blanc." }
-                    },
-                    { 
-                        time: "15:30", type: "Architecture", location: "L'Oculus & WTC", 
-                        desc: "L'épine de Calatrava. Silhouettes nettes sur le marbre.", coords: [40.7118, -74.0112],
-                        longDesc: "L'épine architecturale de Santiago Calatrava. Un espace d'un blanc pur et des lignes futuristes qui sculptent la lumière.",
-                        photoTips: "Cherchez la symétrie parfaite au centre du hall. Jouez avec les silhouettes noires des passants contrastant avec le marbre blanc immaculé.",
-                        shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "Exploitez le minimalisme. Le haut contraste du film soulignera la pureté des lignes architecturales." }
-                    },
-                    { 
-                        time: "16:45", type: "Street Photo", location: "Stone Street", 
-                        desc: "La plus ancienne rue pavée. Lumière rase sur les courtiers.", coords: [40.7038, -74.0105],
-                        longDesc: "La plus ancienne rue pavée de Manhattan. Un véritable saut dans le passé au pied des gratte-ciel géants du Financial District.",
-                        photoTips: "Contraste saisissant entre les pavés anciens au sol et les reflets du verre moderne des tours au-dessus.",
-                        shooting: { gear: "Fujifilm", recipe: "Classic Cuban Negative", advice: "Pour faire ressortir les tons boisés des pubs et le rouge des briques anciennes." }
-                    },
-                    { 
-                        time: "18:15", type: "Street Photo", location: "Staten Isl. Ferry", 
-                        desc: "Heure dorée. À la proue au retour pour la skyline.", coords: [40.7013, -74.0135],
-                        longDesc: "La meilleure croisière gratuite de New York. Le ferry passe au plus près de la Statue de la Liberté avant de revenir vers la skyline.",
-                        photoTips: "Heure dorée. Capturez la silhouette de la Statue de la Liberté à contre-jour. À l'approche de Manhattan, les tours s'enflamment au soleil couchant.",
-                        shooting: { gear: "Fujifilm", recipe: "Kodak Portra 400 v2", advice: "C'est le moment idéal pour les tons chauds du Portra. Les reflets sur l'eau seront magnifiés." }
-                    },
-                    { 
-                        time: "19:30", type: "Transit", location: "Ligne 1 ou R/W", 
-                        desc: "Remontée vers Midtown pour l'énergie du centre.", coords: [40.7600, -73.9830],
-                        longDesc: "Retour vers le centre de l'agitation. Les lumières de la ville commencent à prendre le dessus sur le jour déclinant.",
-                        photoTips: "Capturez les passagers fatigués de leur journée, éclairés par les lumières froides de la station.",
-                        shooting: { gear: "Fujifilm", recipe: "CineStill 800T", advice: "Commencez à switcher sur le CineStill car les sources artificielles deviennent dominantes." }
-                    },
-                    { 
-                        time: "20:30", type: "Dîner", location: "The Halal Guys", 
-                        desc: "Le stand d'origine sur la 53ème. Le jaune vif rend magnifiquement.", coords: [40.7618, -73.9793],
-                        longDesc: "Une institution new-yorkaise. Le stand d'origine avec sa file d'attente perpétuelle et son logo jaune vif iconique.",
-                        photoTips: "ISO élevé requis. Le contraste entre le jaune vif des parasols et le bleu de la nuit urbaine est superbe. Focus sur la découpe de la viande sous les lampes.",
-                        shooting: { gear: "Fujifilm", recipe: "CineStill 800T", advice: "La recette parfaite pour ce lieu. Les spots du stand créeront des halos cinématographiques." }
-                    }
-                ]
+            { 
+                time: "21:00", type: "Déjeuner", location: "2 Bros Pizza", 
+                desc: "Arrêt tactique près de Times Square. Parts de pizza pour moins de 5 $.", coords: [40.7559, -73.9871],
+                longDesc: "La vraie slice new-yorkaise sur le pouce, idéale pour une première immersion.",
+                photoTips: "Jouez avec la lumière des vitrines et la vapeur des parts chaudes.",
+                shooting: { gear: "Fujifilm", recipe: "Classic Cuban Negative", advice: "Pour des couleurs saturées et chaudes." }
             },
-            {
-                day: 4, date: "Mardi 28 Avril", title: "La Nature et le Vertige Vertical",
-                desc: "Échelle et ombres portées avec les cerisiers en toile de fond.",
-                points: [
-                    { 
-                        time: "07:30", type: "Street Photo", location: "Central Park", 
-                        desc: "Branches comme cadre pour Billionaires' Row.", coords: [40.7850, -73.9638],
-                        longDesc: "Le poumon vert de Manhattan. Le contraste entre la nature organique du parc et les tours effilées de Billionaires' Row est l'un des plus saisissants au monde.",
-                        photoTips: "Utilisez les branches d'arbres ou les arches en pierre comme cadres naturels pour les gratte-ciel en arrière-plan. Cherchez les reflets des tours sur l'eau calme des étangs à l'aube.",
-                        shooting: { gear: "Fujifilm", recipe: "Kodak Portra 400 v2", advice: "Les verts naturels et la lumière douce du matin seront parfaitement rendus par cette recette." }
-                    },
-                    { 
-                        time: "11:30", type: "Street Photo", location: "The Met", 
-                        desc: "Théâtre social de premier plan (Marches 82e).", coords: [40.7794, -73.9632],
-                        longDesc: "Un véritable théâtre social. Les marches du Metropolitan Museum sont un lieu d'observation privilégié où toutes les strates de la société new-yorkaise se croisent.",
-                        photoTips: "Prenez du recul pour capturer l'ampleur des marches avec des passants isolés pour donner une échelle. Cherchez des moments candides et des interactions spontanées.",
-                        shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "Visez un look 'Street Photography' classique à la Winogrand ou Leiter. Le noir et blanc accentue les attitudes." }
-                    },
-                    { 
-                        time: "13:00", type: "Déjeuner", location: "Gray's Papaya", 
-                        desc: "Service brutal et efficace.", coords: [40.7790, -73.9818],
-                        longDesc: "Le temple du hot-dog new-yorkais. Une institution au design vintage avec ses enseignes colorées et son service ultra-rapide.",
-                        photoTips: "Capturez l'énergie frénétique à l'intérieur. Les enseignes néon rouges et jaunes sont superbes pour des plans serrés de détails rétro.",
-                        shooting: { gear: "Fujifilm", recipe: "Classic Cuban Negative", advice: "Les couleurs primaires saturées du lieu ressortiront magnifiquement avec cette recette." }
-                    },
-                    { 
-                        time: "14:00", type: "Street Photo", location: "5ème Avenue", 
-                        desc: "La 'pêche' au rayon de soleil.", coords: [40.7628, -73.9743],
-                        longDesc: "L'artère mondiale du luxe. C'est ici que le vertige vertical est le plus fort, avec les rayons de soleil qui percent difficilement entre les immenses tours.",
-                        photoTips: "Pratiquez la 'pêche' à la lumière : trouvez un spot où le soleil touche le trottoir et attendez que des passants intéressants entrent dans le faisceau.",
-                        shooting: { gear: "Fujifilm", recipe: "Kodak Portra 400 v2", advice: "Idéal pour capturer les tons chair des passants élégants et la lumière contrastée de l'après-midi." }
-                    },
-                    { 
-                        time: "16:30", type: "Street Photo", location: "Grand Central", 
-                        desc: "Vitesse à 1/4s. Marée humaine.", coords: [40.7527, -73.9772],
-                        longDesc: "La cathédrale ferroviaire de New York. Son plafond céleste et son horloge centrale en font l'un des intérieurs les plus cinématographiques de la ville.",
-                        photoTips: "Utilisez une vitesse d'obturation lente (1/4s ou 1/8s) pour flouter la foule en mouvement tout en gardant l'architecture parfaitement nette (prenez appui sur un poteau).",
-                        shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "Le noir et blanc souligne la structure monumentale et donne un aspect éternel à ce ballet humain." }
-                    },
-                    { 
-                        time: "18:30", type: "Street Photo", location: "Tudor City Bridge", 
-                        desc: "Alignement solaire (quasi-Manhattanhenge).", coords: [40.7486, -73.9701],
-                        longDesc: "Un pont secret qui surplombe la 42ème rue. Offre un alignement parfait avec le Chrysler Building et les phares des voitures.",
-                        photoTips: "Réalisez une longue exposition pour transformer les phares et feux arrière des voitures en traînées lumineuses (light trails) infinies sous le Chrysler Building.",
-                        shooting: { gear: "Fujifilm", recipe: "CineStill 800T", advice: "La recette ultime pour les traînées lumineuses des taxis et les reflets orangés sur les immeubles." }
-                    },
-                    { 
-                        time: "20:30", type: "Dîner", location: "Empanada Mama", 
-                        desc: "Énergie folle garantie dans Hell's Kitchen.", coords: [40.7632, -73.9880],
-                        longDesc: "Chaleur, musique latine et empanadas fumantes. Un hub social à Hell's Kitchen où l'énergie ne retombe jamais.",
-                        photoTips: "Portraits de groupe informels et ambiance tamisée. Capturez les expressions joyeuses autour des tables partagées.",
-                        shooting: { gear: "Fujifilm", recipe: "CineStill 800T", advice: "Parfait pour l'éclairage intérieur chaud et l'ambiance nocturne de Hell's Kitchen." }
-                    }
-                ]
+            { 
+                time: "21:45", type: "Check-in", location: "HI NYC Hostel", 
+                desc: "Installation rapide au 891 Amsterdam Ave. Dépôt de l'équipement lourd.", coords: [40.7985, -73.9682],
+                longDesc: "Votre base dans l'Upper West Side. Un bâtiment historique avec de grands espaces communs.",
+                photoTips: "Détails architecturaux de la façade en brique rouge.",
+                shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "Utilisez le flash intégré dans les couloirs." }
             },
-            {
-                day: 5, date: "Mercredi 29 Avril", title: "La Diagonale du Diable (Piéton)",
-                desc: "Tu vas scier Manhattan en deux, du Nord au Sud, en suivant la seule avenue qui casse la grille : Broadway.",
-                points: [
-                    { 
-                        time: "08:30", type: "Petit-Déj", location: "Brooklyn Diner", 
-                        desc: "Esthétique classique du 'diner' avant la grande marche.", coords: [40.7660, -73.9805],
-                        longDesc: "Un 'diner' classique au design rutilant. Chrome, banquettes en cuir rouge et éclairage chaleureux. On se croirait dans un décor de film des années 50.",
-                        photoTips: "Jouez avec les reflets du chrome et des néons sur le trottoir mouillé ou sur les carrosseries. Portraits de clients à travers les grandes vitres embrumées.",
-                        shooting: { gear: "Fujifilm", recipe: "Kodak Portra 400 v2", advice: "Idéal pour capturer la valse des tons beiges et rouges du diner dans la lumière du matin." }
-                    },
-                    { 
-                        time: "09:30", type: "Street Photo", location: "Columbus Circle", 
-                        desc: "Flux tendu des banlieusards sortant du métro.", coords: [40.7681, -73.9819],
-                        longDesc: "L'intersection majeure entre Central Park et Manhattan. Un flux incessant de banlieusards, d'écoliers et de touristes autour de la statue de Christophe Colomb.",
-                        photoTips: "Utilisez une focale large pour capturer l'immensité de la place. Cherchez les interactions au centre près de la fontaine. Utilisez les courbes de l'architecture moderne environnante.",
-                        shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "Le noir et blanc permet d'isoler les formes graphiques et les ombres portées dans cette foule dense." }
-                    },
-                    { 
-                        time: "10:30", type: "Street Photo", location: "Times Square", 
-                        desc: "Lumière crue des panneaux LED. Cherche l'aliénation.", coords: [40.7580, -73.9855],
-                        longDesc: "Le centre électrique du monde. Une aliénation visuelle totale causée par les écrans LED géants, le bruit et la foule compacte venue du monde entier.",
-                        photoTips: "Cherchez les visages isolés dans la foule, étrangement éclairés par la lumière crue des écrans. Utilisez des angles bas pour accentuer le vertige des panneaux publicitaires.",
-                        shooting: { gear: "Fujifilm", recipe: "CineStill 800T", advice: "La lumière massive des écrans LED créera des couleurs surréalistes et des halos cinématographiques." }
-                    },
-                    { 
-                        time: "12:30", type: "Déjeuner", location: "Los Tacos No.1", 
-                        desc: "Le meilleur taco debout de Manhattan.", coords: [40.7570, -73.9875],
-                        longDesc: "Le meilleur taco debout de Manhattan. Une énergie frénétique où les clients mangent au comptoir en inox sous une lumière chaude et directe.",
-                        photoTips: "Focus sur les gestes rapides des 'taqueros'. Capturez la fumée qui s'échappe de la grille. Utilisez une vitesse rapide pour figer les projections de salsa.",
-                        shooting: { gear: "Fujifilm", recipe: "Classic Cuban Negative", advice: "Les tons chauds et vibrants de cette recette sont parfaits pour l'ambiance sud-américaine du lieu." }
-                    },
-                    { 
-                        time: "13:30", type: "Street Photo", location: "Garment / Herald Sq", 
-                        desc: "Manutentionnaires et portants de vêtements au milieu du trafic.", coords: [40.7510, -73.9890],
-                        longDesc: "Le quartier de la mode historique. Vous y croiserez des manutentionnaires poussant des portants de vêtements entre les taxis jaunes et les bus bondés.",
-                        photoTips: "Capturez le contraste entre ce travail manuel 'gritty' et le luxe environnant. Cherchez les lignes directrices créées par les rangées de portants métalliques.",
-                        shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "Visez un look 'Street Photography' industriel et brut qui souligne la texture des matériaux." }
-                    },
-                    { 
-                        time: "15:30", type: "Street Photo", location: "SoHo (Prince/Bway)", 
-                        desc: "Reflets des vitrines de luxe pour superposer mannequins et passants.", coords: [40.7235, -73.9981],
-                        longDesc: "Le cœur battant de SoHo. Architecture en fonte, rues pavées et reflets infinis dans les gigantesques vitrines des boutiques de créateurs.",
-                        photoTips: "Pratiquez la superposition : cadrez de manière à mêler les mannequins immobiles en vitrine aux passants réels dans la rue. Jouez avec les ombres portées du fer forgé sur le sol.",
-                        shooting: { gear: "Fujifilm", recipe: "Kodak Portra 400 v2", advice: "Le rendu des teintes chair et des textures de mode est la spécialité de cette recette." }
-                    },
-                    { 
-                        time: "17:30", type: "Street Photo", location: "TriBeCa", 
-                        desc: "Rues pavées, lumière dorée sur anciens entrepôts.", coords: [40.7180, -74.0070],
-                        longDesc: "Triangle Below Canal Street. Des rues pavées calmes, des lofts immenses et une lumière dorée qui s'engouffre entre les bâtiments historiques.",
-                        photoTips: "Exploitez la lumière rasante de fin de journée qui souligne la texture des pavés. Cherchez les silhouettes solitaires devant les entrées de lofts minimalistes.",
-                        shooting: { gear: "Fujifilm", recipe: "Classic Cuban Negative", advice: "Fera ressortir les tons boisés profonds et la chaleur des briques de TriBeCa à l'heure dorée." }
-                    },
-                    { 
-                        time: "19:30", type: "Dîner", location: "The Odeon", 
-                        desc: "Institution de TriBeCa. Néons rouges et ambiance cinématique.", coords: [40.7163, -74.0075],
-                        longDesc: "Une institution légendaire de TriBeCa. Néons rouges iconiques, ambiance de film policier des années 80 et décoration intérieure indémodable.",
-                        photoTips: "Capturez l'enseigne néon 'Odeon' qui se reflète sur les carrosseries rutilantes des voitures. Intérieur tamisé idéal pour les portraits d'ambiance.",
-                        shooting: { gear: "Fujifilm", recipe: "CineStill 800T", advice: "Indispensable ici pour l'halation sur le néon rouge et le rendu cinématographique global." }
-                    },
-                    { 
-                        time: "21:00", type: "Retour", location: "Ligne 1 ou 2/3", 
-                        desc: "Retour bien mérité vers l'UWS.", coords: [40.7170, -74.0090],
-                        longDesc: "Fin de la traversée. La fatigue de la journée se lit sur les visages des voyageurs dans la lumière blafarde des wagons du métro.",
-                        photoTips: "Silhouettes dans les couloirs interminables. Jeux d'ombres et de lumière crue sur les quais. Capturez l'isolement urbain.",
-                        shooting: { gear: "Fujifilm", recipe: "Kodak Tri-X 400", advice: "Le noir et blanc contrasté est parfait pour conclure cette journée marathon sur une note poétique." }
-                    }
-                ]
+            { 
+                time: "22:30", type: "Street Photo", location: "Broadway (UWS)", 
+                desc: "Recherche des contrastes lumineux autour des bodegas locales.", coords: [40.8000, -73.9680],
+                longDesc: "L'artère vitale de New York. À cette heure, les néons des bodegas créent une atmosphère cinématographique.",
+                photoTips: "Puddle grams' (reflets dans les flaques) si le sol est humide.",
+                shooting: { gear: "Fujifilm", recipe: "CineStill 800T", advice: "C'est l'essence même du CineStill." }
             },
-            {
-                day: 6, date: "Jeudi 30 Avril", title: "Fer Forgé et Néons Cyberpunk",
-                desc: "Contraste : l'architecture intemporelle le matin et le néon la nuit.",
-                points: [
-                    { 
-                        time: "09:00", type: "Petit-Déj", location: "Deli local", 
-                        desc: "Le fameux BEC (Bacon, Egg and Cheese).", coords: [40.7230, -73.9980],
-                        longDesc: "Le rituel matinal immuable de tout new-yorkais : le Bacon, Egg and Cheese (BEC). Un lieu de vie essentiel où le quartier se réveille autour du café filtre.",
-                        photoTips: "Focus sur les mains huilées qui préparent le sandwich sur la plaque chauffante. Capturez la buée sur les vitrines et les visages ensommeillés. Utilisez une vitesse rapide pour figer la vapeur.",
-                        shooting: { gear: "Fujifilm", recipe: "Kodak Portra 400 v2", advice: "Tons de peau naturels et ambiance matinale authentique pour ce shot documentaire." }
-                    },
-                    { 
-                        time: "10:00", type: "Street Photo", location: "Lower Manhattan", 
-                        desc: "Architecture et reflets matinaux (Mercer ou Greene).", coords: [40.7245, -74.0000],
-                        longDesc: "Les rues pavées de SoHo (Mercer, Greene) au réveil. Les façades en fer forgé créent des ombres géométriques complexes sous le soleil matinal.",
-                        photoTips: "Alignement des colonnes en fonte typiques de SoHo. Cherchez les perspectives fuyantes dans les rues encore désertes. Expérimentez avec les angles bas pour accentuer la hauteur.",
-                        shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "Visez la structure et la répétition. Le noir et blanc souligne la force graphique du fer forgé." }
-                    },
-                    { 
-                        time: "12:30", type: "Street Photo", location: "Washington Sq", 
-                        desc: "Le chaos organisé : jazz, échecs, skateboarders.", coords: [40.7308, -73.9973],
-                        longDesc: "Le cœur battant de Greenwich Village. Jazzmen virtuoses, joueurs d'échecs imperturbables et skateboarders s'approprient cet espace sous l'arche majestueuse.",
-                        photoTips: "Utilisez l'arche pour encadrer le passage des passants. Faites des portraits serrés des musiciens. Cherchez le mouvement des skateurs avec un flou de bougé maîtrisé.",
-                        shooting: { gear: "Fujifilm", recipe: "Classic Cuban Negative", advice: "L'énergie vibrante et les couleurs hétéroclites du parc ressortiront parfaitement ici." }
-                    },
-                    { 
-                        time: "13:30", type: "Déjeuner", location: "Mamoun's Falafel", 
-                        desc: "On mange en marchant.", coords: [40.7300, -74.0006],
-                        longDesc: "Le plus vieux stand de falafels du Village. Un espace minuscule, iconique et débordant de vie depuis 1971.",
-                        photoTips: "Capturez la file d'attente hétéroclite qui s'étire sur le trottoir de MacDougal St. Focus sur la préparation ultra-rapide des sandwichs dans l'étroitesse du stand.",
-                        shooting: { gear: "Fujifilm", recipe: "Kodak Portra 400 v2", advice: "Idéal pour capturer l'ambiance chaleureuse de cette institution du Village." }
-                    },
-                    { 
-                        time: "14:30", type: "Transit", location: "Lignes M ou J", 
-                        desc: "Métro vers Brooklyn.", coords: [40.7060, -73.9550],
-                        longDesc: "Le passage de Manhattan à Brooklyn au-dessus de l'East River. La traversée du Williamsburg Bridge offre des vues imprenables.",
-                        photoTips: "Shootez à travers les vitres du wagon ou depuis la plateforme arrière si possible pour capturer les structures métalliques du pont qui défilent.",
-                        shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "L'esthétique ferroviaire et les ombres du pont demandent du contraste." }
-                    },
-                    { 
-                        time: "16:00", type: "Street Photo", location: "S Williamsburg", 
-                        desc: "Silhouettes sombres et bus scolaires. Superposition.", coords: [40.7029, -73.9577],
-                        longDesc: "Le quartier hassidique de South Williamsburg. Une atmosphère unique au monde avec ses bus scolaires jaunes et ses habitants vêtus de noir.",
-                        photoTips: "Cherchez les superpositions graphiques entre le jaune vif des bus et les silhouettes sombres des passants. Restez très discret et respectueux de la communauté.",
-                        shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "Le noir et blanc accentue l'intemporalité et le graphisme des tenues traditionnelles." }
-                    },
-                    { 
-                        time: "18:30", type: "Dîner", location: "Gottlieb's", 
-                        desc: "Deli casher historique. Sandwich pastrami.", coords: [40.7107, -73.9577],
-                        longDesc: "Deli casher historique fondé en 1962. Un véritable pont entre le vieux Brooklyn et aujourd'hui, servant l'un des meilleurs pastramis de la ville.",
-                        photoTips: "Intérieur resté 'dans son jus' avec une patine incroyable. Portraits candides des habitués attablés sous les néons blafards.",
-                        shooting: { gear: "Fujifilm", recipe: "Classic Cuban Negative", advice: "Idéal pour souligner la nostalgie et les tons chauds du décor vintage." }
-                    },
-                    { 
-                        time: "20:00", type: "Street Photo", location: "Koreatown", 
-                        desc: "Tranchée de néons de K-Town. Pur Cyberpunk.", coords: [40.7477, -73.9869],
-                        longDesc: "Une tranchée verticale de néons et d'enseignes colorées au cœur de Midtown. Une ambiance 'Blade Runner' unique avec ses restaurants ouverts 24h/24.",
-                        photoTips: "Shootez vers le haut pour capturer l'empilement chaotique des enseignes. Exploitez les reflets des néons sur le sol pour un look cyberpunk total. Utilisez l'halation à votre avantage.",
-                        shooting: { gear: "Fujifilm", recipe: "CineStill 800T", advice: "Le terrain de jeu rêvé pour cette recette. Les rouges et bleus des néons vont exploser." }
-                    }
-                ]
-            },
-            {
-                day: 7, date: "Vendredi 1er Mai", title: "L'Axe Ouest (Flânerie Continue)",
-                desc: "Finis les zigzags. Tu commences au milieu de Manhattan et glisses vers le sud-ouest.",
-                points: [
-                    { 
-                        time: "09:00", type: "Petit-Déj", location: "S&P Sandwich Shop", 
-                        desc: "Comptoir à l'ancienne parfait avant d'attaquer.", coords: [40.7410, -73.9895],
-                        longDesc: "Un comptoir à l'ancienne (ex-Eisenberg's) qui a su conserver tout le charme de Broadway des années 1930. L'odeur du café et des toasts roussis y est éternelle.",
-                        photoTips: "Portraits candides de clients habitués au comptoir. Focus sur le café fumant servi dans d'épaisses tasses en porcelaine. La lumière qui entre par la vitrine crée de beaux contrastes.",
-                        shooting: { gear: "Fujifilm", recipe: "Kodak Portra 400 v2", advice: "Les tons beiges et la lumière douce du matin dans le deli sont magnifiés par cette recette." }
-                    },
-                    { 
-                        time: "10:00", type: "Street Photo", location: "Flatiron / Madison", 
-                        desc: "Chercher l'humour visuel. Zone des vents croisés.", coords: [40.7411, -73.9897],
-                        longDesc: "Le bâtiment en fer à repasser le plus célèbre du monde. Une proue de navire en pierre à l'intersection de la 5ème et de Broadway. C'est une zone de courants d'air violents.",
-                        photoTips: "Cherchez 'l'humour visuel' : un chapeau qui s'envole, un journal qui s'éparpille ou des interactions cocasses dues au vent. Utilisez le Flatiron pour structurer vos compositions.",
-                        shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "Visez le style 'Street Photography' classique à la Elliott Erwitt. Le noir et blanc souligne le mouvement et l'humour." }
-                    },
-                    { 
-                        time: "12:00", type: "Street Photo", location: "Chelsea", 
-                        desc: "Galeries d'art, anciens entrepôts. Public très pointu.", coords: [40.7465, -74.0014],
-                        longDesc: "Le quartier des galeries d'art contemporain mondiales. Un mélange de brique rouge industrielle et de structures de verre ultramodernes le long de la High Line.",
-                        photoTips: "Capturez le public 'pointu' et élégant devant les galeries. Utilisez les reflets sur les structures métalliques de la High Line pour des compositions abstraites.",
-                        shooting: { gear: "Fujifilm", recipe: "Classic Cuban Negative", advice: "Les couleurs sophistiquées et le contraste marqué conviennent bien à l'esthétique de Chelsea." }
-                    },
-                    { 
-                        time: "13:30", type: "Déjeuner", location: "Joe's Pizza", 
-                        desc: "La slice classique de Manhattan dans West Village.", coords: [40.7306, -74.0021],
-                        longDesc: "La 'slice' de pizza new-yorkaise par excellence. Une institution sur MacDougal Street où touristes et locaux font la queue pour une part brûlante.",
-                        photoTips: "Le geste iconique du pliage de la part de pizza. Capturez la file d'attente hétéroclite sous le soleil du Village. Focus sur la texture de la croûte dorée.",
-                        shooting: { gear: "Fujifilm", recipe: "Kodak Portra 400 v2", advice: "Idéal pour les rouges vibrants de la sauce tomate et les tons ensoleillés de la rue." }
-                    },
-                    { 
-                        time: "14:30", type: "Street Photo", location: "West Village", 
-                        desc: "Le labyrinthe. Ombres portées de la végétation sur la brique.", coords: [40.7358, -74.0036],
-                        longDesc: "Un labyrinthe de rues pavées qui ignorent la grille de Manhattan. C'est le New York romantique avec ses maisons basses et sa végétation débordante.",
-                        photoTips: "Exploitez les ombres portées des feuilles sur les façades de briques rouges. Cherchez les recoins cachés et les escaliers en fer forgé fleuris.",
-                        shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "Le noir et blanc fait ressortir la texture des pavés et le jeu subtil des ombres végétales sur la pierre." }
-                    },
-                    { 
-                        time: "17:00", type: "Événement Art", location: "Whitney Museum", 
-                        desc: "Interaction absurde entre visiteurs et art contemporain.", coords: [40.7396, -74.0089],
-                        longDesc: "Le nouveau Whitney de Renzo Piano. Un chef-d'œuvre de métal et de verre avec des terrasses offrant des vues imprenables sur l'Hudson et la ville.",
-                        photoTips: "Jouez avec l'interaction absurde ou pensive des visiteurs face aux œuvres. Utilisez les immenses baies vitrées pour créer des superpositions intérieur/extérieur.",
-                        shooting: { gear: "Fujifilm", recipe: "Classic Cuban Negative", advice: "Les couleurs vives de l'art moderne ressortiront avec une saturation magnifique." }
-                    },
-                    { 
-                        time: "20:30", type: "Dîner", location: "Corner Bistro", 
-                        desc: "Pub historique sombre et bruyant. Légendaire Bistro Burger.", coords: [40.7378, -74.0038],
-                        longDesc: "Un pub historique et rustique. On y vient pour le célèbre Bistro Burger, mangé sur des tables en bois massif dans une lumière tamisée.",
-                        photoTips: "Travaillez en basse lumière. Portraits d'ambiance à la lueur des lampes du bar. Focus sur la vapeur qui s'échappe des assiettes.",
-                        shooting: { gear: "Fujifilm", recipe: "CineStill 800T", advice: "Parfait pour l'ambiance 'Noire' et tamisée du bar. Les sources lumineuses isolées seront sublimées." }
-                    },
-                    { 
-                        time: "21:30", type: "Street Photo", location: "Meatpacking", 
-                        desc: "Lumière crue des clubs contrastant avec les anciennes usines.", coords: [40.7405, -74.0076],
-                        longDesc: "Le quartier de la mode et de la nuit. Le contraste est total entre le pavé brut des anciens abattoirs et le glamour artificiel des clubs de luxe.",
-                        photoTips: "Capturez la lumière crue des projecteurs devant les clubs. Le contraste entre les tenues de soirée sophistiquées et les murs de briques industriels est fascinant.",
-                        shooting: { gear: "Fujifilm", recipe: "CineStill 800T", advice: "Indispensable pour capturer l'esprit de la nuit et l'halation sur les néons des clubs branchés." }
-                    }
-                ]
-            },
-            {
-                day: 8, date: "Samedi 2 Mai", title: "Cœur Ouvrier et Départ",
-                desc: "Exit Coney Island. On sécurise autour de Penn Station pour un départ l'esprit libre.",
-                points: [
-                    { 
-                        time: "08:30", type: "Logistique", location: "HI NYC -> Penn St", 
-                        desc: "Check-out. Métro avec les affaires vers Penn Station.", coords: [40.7505, -73.9934],
-                        longDesc: "Le dernier trajet dans le métro avec les bagages. L'agitation matinale de la ligne 1 qui vous ramène au cœur de Midtown. C'est le moment de la transition.",
-                        photoTips: "Capturez l'accumulation de bagages dans le wagon. Portraits de voyageurs qui rentrent chez eux ou arrivent en ville. Jouez avec les lumières crues de la station.",
-                        shooting: { gear: "Fujifilm", recipe: "Kodak Portra 400 v2", advice: "Tons naturels pour ce moment de transition logistique." }
-                    },
-                    { 
-                        time: "09:15", type: "Consigne", location: "Bounce / LuggageHero", 
-                        desc: "Lâche ton sac, appareil en bandoulière !", coords: [40.7510, -73.9930],
-                        longDesc: "Se débarrasser du poids pour les dernières heures. Un moment de transition dans une boutique de quartier typiquement new-yorkaise.",
-                        photoTips: "Capturez l'intérieur encombré de la boutique, mélange de souvenirs et de sacs de voyageurs du monde entier.",
-                        shooting: { gear: "Fujifilm", recipe: "Classic Cuban Negative", advice: "Parfait pour le côté 'bazar' et les couleurs saturées des boutiques de souvenirs." }
-                    },
-                    { 
-                        time: "09:30", type: "Street Photo", location: "Garment District", 
-                        desc: "Le cœur ouvrier. Vapeur, trafic, NY des années 70.", coords: [40.7535, -73.9910],
-                        longDesc: "Le NY ouvrier et brut. Vapeur qui s'échappe des plaques d'égout, vacarme permanent du trafic et manutentionnaires pressés avec leurs portants.",
-                        photoTips: "Cherchez la vapeur qui sort du sol pour créer des contre-jours spectaculaires. Les portants de vêtements sont une mine d'or visuelle. Visez le look 'gritty' de la rue.",
-                        shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "L'aspect brut du grain argentique est indispensable pour capturer l'esprit des années 70 de ce quartier." }
-                    },
-                    { 
-                        time: "11:30", type: "Street Photo", location: "Hudson Yards", 
-                        desc: "Le 'Vessel', les tours de verre. Architecture hyper-moderne.", coords: [40.7540, -74.0010],
-                        longDesc: "Le nouveau visage de Manhattan. Une architecture futuriste en verre et en acier. Le Vessel se dresse comme une ruche géante au milieu des tours.",
-                        photoTips: "Jouez avec les reflets du ciel sur les immenses baies vitrées. Cherchez des angles inhabituels pour capturer la géométrie complexe et répétitive du Vessel.",
-                        shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "Le minimalisme architectural et les lignes pures demandent la précision du noir et blanc." }
-                    },
-                    { 
-                        time: "13:30", type: "Déjeuner", location: "Tick Tock Diner", 
-                        desc: "Gigantesque, situé au pied de Penn Station pour maîtriser ton temps.", coords: [40.7523, -73.9933],
-                        longDesc: "L'un des plus grands diners de la ville. Un décor chromé géant et une ambiance électrique juste en face de Penn Station.",
-                        photoTips: "Design 'Néon-Noir'. Superbes reflets sur le toit en inox et les banquettes. Capturez l'agitation frénétique du service avant les grands départs.",
-                        shooting: { gear: "Fujifilm", recipe: "CineStill 800T", advice: "Le chrome et les néons vont briller. C'est le moment de tester les limites de l'halation." }
-                    },
-                    { 
-                        time: "15:00", type: "Logistique", location: "Penn Station", 
-                        desc: "Récupération des bagages tranquillement.", coords: [40.7505, -73.9934],
-                        longDesc: "Le retour au point de départ. La mélancolie du voyageur qui récupère ses affaires pour le dernier trajet vers l'aéroport.",
-                        photoTips: "Silhouettes de voyageurs devant les immenses panneaux d'affichage. Capturez l'agitation désordonnée de la gare dans la lumière artificielle.",
-                        shooting: { gear: "Fujifilm", recipe: "CineStill 800T", advice: "Ambiance transitoire et lumière tungstène idéale pour conclure le récit visuel." }
-                    },
-                    { 
-                        time: "16:00", type: "Transit", location: "NJ Transit", 
-                        desc: "Direction EWR.", coords: [40.7505, -73.9934],
-                        longDesc: "Le dernier trajet en train. La ville défile une dernière fois à travers la vitre, s'éloignant peu à peu.",
-                        photoTips: "Capturez les paysages industriels du New Jersey qui défilent. Le flou de bougé accentue la sensation de départ.",
-                        shooting: { gear: "Fujifilm", recipe: "Kodak Tri-X 400", advice: "Le noir et blanc contrasté pour un adieu poétique et intemporel à la ville." }
-                    },
-                    { 
-                        time: "17:00", type: "Départ", location: "Aéroport EWR", 
-                        desc: "Dépôt bagages, vol à 20h25.", coords: [40.6895, -74.1745],
-                        longDesc: "La fin du voyage. Le terminal de l'aéroport Newark et le dernier regard sur le tarmac avant l'embarquement pour le vol retour.",
-                        photoTips: "Reflets des avions sur les grandes baies vitrées du terminal. Géométrie des fauteuils d'attente et silhouettes de voyageurs isolés.",
-                        shooting: { gear: "Fujifilm", recipe: "Kodak Tri-X 400", advice: "Finir la pellicule en noir et blanc pour clore le chapitre new-yorkais." }
-                    }
-                ]
+            { 
+                time: "00:30", type: "Repos", location: "HI NYC Hostel", 
+                desc: "Retour pour maximiser le sommeil.", coords: [40.7985, -73.9682],
+                longDesc: "Fin de la première immersion.",
+                photoTips: "Contrastes forts dans les cages d'escalier de l'hostel.",
+                shooting: { gear: "Fujifilm", recipe: "Kodak Tri-X 400", advice: "Baissez l'exposition pour les silhouettes." }
             }
-        ];
+        ]
+    },
+    {
+        day: 2, date: "Dimanche 26 Avril", title: "Acier, Béton et Dimanche à Brooklyn",
+        desc: "Le décalage horaire garantit un réveil à l'aube. C'est ton avantage tactique pour DUMBO.",
+        points: [
+            { 
+                time: "05:30", type: "Transit", location: "Lignes 1 + A/C", 
+                desc: "Vers High Street (Brooklyn).", coords: [40.6993, -73.9904],
+                longDesc: "Traversée matinale dans les entrailles de la ville.",
+                photoTips: "Saisir la solitude des premiers travailleurs.",
+                shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "L'esthétique brute du métro à l'aube." }
+            },
+            { 
+                time: "06:15", type: "Street Photo", location: "DUMBO", 
+                desc: "Exploitation des ombres longues matinales et géométrie.", coords: [40.7033, -73.9896],
+                longDesc: "Down Under the Manhattan Bridge Overpass. Le paradis des lignes directrices.",
+                photoTips: "L'iconique Washington St pour cadrer le Manhattan Bridge.",
+                shooting: { gear: "Fujifilm", recipe: "Kodak Portra 400 v2", advice: "Profitez de la lumière douce du matin." }
+            },
+            { 
+                time: "07:30", type: "Street Photo", location: "Brooklyn Bridge", 
+                desc: "Contraste pierre/verre, câbles d'acier.", coords: [40.7061, -73.9969],
+                longDesc: "Traversée mythique est-ouest.",
+                photoTips: "Utilisez les câbles comme cadres naturels.",
+                shooting: { gear: "Fujifilm", recipe: "Kodak Portra 400 v2", advice: "Visez le bleu du ciel contrastant avec le beige." }
+            },
+            { 
+                time: "09:30", type: "Petit-Déj", location: "Zucker's Bagels", 
+                desc: "146 Chambers St. Repas énergétique.", coords: [40.7155, -74.0091],
+                longDesc: "L'odeur du pain frais et du café.",
+                photoTips: "Portraits candides des clients.",
+                shooting: { gear: "Fujifilm", recipe: "Kodak Portra 400 v2", advice: "Ambiances chaudes de petit-déjeuner." }
+            },
+            { 
+                time: "10:30", type: "Transit", location: "Lignes 2 ou 3", 
+                desc: "Vers Grand Army Plaza.", coords: [40.6750, -73.9700],
+                longDesc: "L'arc de triomphe de Brooklyn.",
+                photoTips: "Architecture symétrique.",
+                shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "L'architecture monumentale en N&B." }
+            },
+            { 
+                time: "11:30", type: "Photo", location: "Smorgasburg", 
+                desc: "Breeze Hill, Prospect Park.", coords: [40.6611, -73.9634],
+                longDesc: "Festival culinaire en plein air.",
+                photoTips: "Macro sur les plats et réactions de la foule.",
+                shooting: { gear: "Fujifilm", recipe: "Classic Cuban Negative", advice: "Parfait pour les scènes de foule colorées." }
+            },
+            { 
+                time: "14:00", type: "Street Photo", location: "Crown Heights", 
+                desc: "Tissu urbain dense, métro aérien.", coords: [40.6681, -73.9447],
+                longDesc: "Quartier riche en contrastes culturels.",
+                photoTips: "Façades colorées et vie de quartier.",
+                shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "Texture des vieux bâtiments." }
+            },
+            { 
+                time: "16:30", type: "Street Photo", location: "Smith-9th St", 
+                desc: "Station la plus haute. Vue sur Statue de la Liberté.", coords: [40.6734, -73.9959],
+                longDesc: "Vue plongeante sur les canaux industriels.",
+                photoTips: "Cadrez la rame avec la Statue au loin.",
+                shooting: { gear: "Fujifilm", recipe: "Kodak Portra 400 v2", advice: "Teintes bleutées de l'horizon." }
+            },
+            { 
+                time: "19:30", type: "Dîner", location: "F&F Pizzeria", 
+                desc: "Excellente part de pizza artisanale.", coords: [40.6792, -73.9992],
+                longDesc: "Ambiance de quartier.",
+                photoTips: "Les néons Pizza se reflétant sur l'inox.",
+                shooting: { gear: "Fujifilm", recipe: "CineStill 800T", advice: "Lumières du four et du néon." }
+            },
+            { 
+                time: "21:00", type: "Retour", location: "Lignes F ou G", 
+                desc: "Remontée vers Manhattan.", coords: [40.7985, -73.9682],
+                longDesc: "Retour sur l'UWS.",
+                photoTips: "Silhouettes de passants isolés.",
+                shooting: { gear: "Fujifilm", recipe: "Kodak Tri-X 400", advice: "Contraste des lampadaires." }
+            }
+        ]
+    },
+    {
+        day: 3, date: "Lundi 27 Avril", title: "Le Creuset Humain et Géométrie Blanche",
+        desc: "Tu attaques directement dans le vif du sujet en plein cœur du Downtown.",
+        points: [
+            { 
+                time: "08:30", type: "Transit", location: "Lignes 1 + B/D", 
+                desc: "Vers le Lower East Side (Grand St).", coords: [40.7183, -73.9930],
+                longDesc: "L'entrée dans le Lower East Side.",
+                photoTips: "Capturez le contraste des vieux bâtiments.",
+                shooting: { gear: "Fujifilm", recipe: "Kodak Portra 400 v2", advice: "Tons naturels pour les façades." }
+            },
+            { 
+                time: "09:15", type: "Petit-Déj", location: "Kopitiam", 
+                desc: "Petit-déjeuner malaisien abordable.", coords: [40.7138, -73.9908],
+                longDesc: "Café malaisien vibrant.",
+                photoTips: "Intérieur serré, capturez les portraits au comptoir.",
+                shooting: { gear: "Fujifilm", recipe: "Classic Cuban Negative", advice: "Chaleur des plats." }
+            },
+            { 
+                time: "10:00", type: "Street Photo", location: "Chinatown", 
+                desc: "Doyers Street. Courbure atypique.", coords: [40.7143, -73.9981],
+                longDesc: "L'une des rues les plus célèbres de Chinatown.",
+                photoTips: "Ombres portées des vieux bâtiments.",
+                shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "Le contraste souligne la courbure." }
+            },
+            { 
+                time: "11:00", type: "Street Photo", location: "Columbus Park", 
+                desc: "Joueurs d'échecs au 35mm.", coords: [40.7145, -74.0001],
+                longDesc: "Le cœur social de Chinatown.",
+                photoTips: "Portrait candide des joueurs de Xiangqi.",
+                shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "Approche documentaire." }
+            },
+            { 
+                time: "13:00", type: "Déjeuner", location: "North Dumpling", 
+                desc: "Dix succulents dumplings pour pas cher.", coords: [40.7152, -73.9898],
+                longDesc: "Restauration rapide de rue.",
+                photoTips: "Gros plan sur les raviolis fumants.",
+                shooting: { gear: "Fujifilm", recipe: "Classic Cuban Negative", advice: "Vivacité de Chinatown." }
+            },
+            { 
+                time: "14:00", type: "Street Photo", location: "Lower East Side", 
+                desc: "Brique vs gentrification de verre.", coords: [40.7183, -73.9894],
+                longDesc: "Le quartier historique des immigrants.",
+                photoTips: "Exploitez les 'Fire Escapes'.",
+                shooting: { gear: "Fujifilm", recipe: "Kodak Portra 400 v2", advice: "Teintes de peau et couleurs urbaines." }
+            },
+            { 
+                time: "15:15", type: "Transit", location: "Lignes J ou Z", 
+                desc: "Direction Fulton St.", coords: [40.7110, -74.0080],
+                longDesc: "Traversée rapide vers le sud.",
+                photoTips: "Shootez à travers les vitres.",
+                shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "Atmosphère brute du métro." }
+            },
+            { 
+                time: "15:30", type: "Architecture", location: "L'Oculus & WTC", 
+                desc: "Silhouettes humaines graphiques.", coords: [40.7118, -74.0112],
+                longDesc: "L'épine architecturale de Santiago Calatrava.",
+                photoTips: "Cherchez la symétrie parfaite.",
+                shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "Minimalisme et haut contraste." }
+            },
+            { 
+                time: "16:45", type: "Street Photo", location: "Stone Street", 
+                desc: "Plus ancienne rue pavée, foules afterwork.", coords: [40.7038, -74.0105],
+                longDesc: "Saut dans le passé au pied des gratte-ciel.",
+                photoTips: "Contraste pavés anciens / verre moderne.",
+                shooting: { gear: "Fujifilm", recipe: "Classic Cuban Negative", advice: "Tons boisés et briques." }
+            },
+            { 
+                time: "18:15", type: "Street Photo", location: "Staten Isl. Ferry", 
+                desc: "Skyline illuminée au crépuscule.", coords: [40.7013, -74.0135],
+                longDesc: "La meilleure croisière gratuite.",
+                photoTips: "Heure dorée, silhouette de la Statue.",
+                shooting: { gear: "Fujifilm", recipe: "Kodak Portra 400 v2", advice: "Tons chauds sur l'eau." }
+            },
+            { 
+                time: "19:30", type: "Transit", location: "Ligne 1 ou R/W", 
+                desc: "Remontée vers Midtown.", coords: [40.7600, -73.9830],
+                longDesc: "Retour vers le centre de l'agitation.",
+                photoTips: "Passagers éclairés par les lumières froides.",
+                shooting: { gear: "Fujifilm", recipe: "CineStill 800T", advice: "Sources artificielles dominantes." }
+            },
+            { 
+                time: "20:30", type: "Dîner", location: "The Halal Guys", 
+                desc: "53rd St & 6th Ave. Repas copieux.", coords: [40.7618, -73.9793],
+                longDesc: "Stand iconique jaune vif.",
+                photoTips: "ISO élevé requis. Contraste jaune vif / nuit.",
+                shooting: { gear: "Fujifilm", recipe: "CineStill 800T", advice: "Halos cinématographiques." }
+            }
+        ]
+    },
+    {
+        day: 4, date: "Mardi 28 Avril", title: "La Nature Suspendue et Vertige",
+        desc: "Échelle et ombres portées avec les cerisiers en toile de fond.",
+        points: [
+            { 
+                time: "06:45", type: "Petit-Déj", location: "Broad Nosh Bagels", 
+                desc: "Bagels roulés à la main.", coords: [40.7885, -73.9760],
+                longDesc: "Excellent début de journée.",
+                photoTips: "Capturez les bagels tout frais sortis du four.",
+                shooting: { gear: "Fujifilm", recipe: "Kodak Portra 400 v2", advice: "Lumière douce du matin." }
+            },
+            { 
+                time: "07:30", type: "Street Photo", location: "Central Park", 
+                desc: "Réservoir Kennedy. Encadrement végétal des gratte-ciel.", coords: [40.7850, -73.9638],
+                longDesc: "Le poumon vert de Manhattan.",
+                photoTips: "Branches d'arbres comme cadres naturels.",
+                shooting: { gear: "Fujifilm", recipe: "Kodak Portra 400 v2", advice: "Verts naturels." }
+            },
+            { 
+                time: "11:30", type: "Street Photo", location: "The Met", 
+                desc: "Marches emblématiques du musée.", coords: [40.7794, -73.9632],
+                longDesc: "Un véritable théâtre social.",
+                photoTips: "Ampleur des marches avec des passants isolés.",
+                shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "Look Street Photography classique." }
+            },
+            { 
+                time: "13:00", type: "Déjeuner", location: "Gray's Papaya", 
+                desc: "Hot-dogs légendaires.", coords: [40.7790, -73.9818],
+                longDesc: "Le temple du hot-dog new-yorkais.",
+                photoTips: "Énergie frénétique à l'intérieur.",
+                shooting: { gear: "Fujifilm", recipe: "Classic Cuban Negative", advice: "Couleurs primaires saturées." }
+            },
+            { 
+                time: "14:00", type: "Street Photo", location: "5ème Avenue", 
+                desc: "La pêche aux rayons du soleil.", coords: [40.7628, -73.9743],
+                longDesc: "L'artère mondiale du luxe.",
+                photoTips: "Attendez que les passants entrent dans le faisceau de lumière.",
+                shooting: { gear: "Fujifilm", recipe: "Kodak Portra 400 v2", advice: "Tons chair et lumière contrastée." }
+            },
+            { 
+                time: "16:30", type: "Architecture", location: "Grand Central", 
+                desc: "Vitesse lente (1/4s) depuis la balustrade.", coords: [40.7527, -73.9772],
+                longDesc: "La cathédrale ferroviaire de New York.",
+                photoTips: "Floutez la foule tout en gardant l'architecture nette.",
+                shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "Aspect éternel au ballet humain." }
+            },
+            { 
+                time: "18:30", type: "Street Photo", location: "Tudor City Bridge", 
+                desc: "Silhouettes en contre-jour.", coords: [40.7486, -73.9701],
+                longDesc: "Pont surplombant la 42e rue.",
+                photoTips: "Longue exposition pour les traînées lumineuses.",
+                shooting: { gear: "Fujifilm", recipe: "CineStill 800T", advice: "Traînées lumineuses et reflets." }
+            },
+            { 
+                time: "20:30", type: "Dîner", location: "Empanada Mama", 
+                desc: "Empanadas abordables dans Hell's Kitchen.", coords: [40.7632, -73.9880],
+                longDesc: "Chaleur et musique latine.",
+                photoTips: "Portraits de groupe informels.",
+                shooting: { gear: "Fujifilm", recipe: "CineStill 800T", advice: "Éclairage intérieur chaud." }
+            }
+        ]
+    },
+    {
+        day: 5, date: "Mercredi 29 Avril", title: "La Diagonale du Diable (100% Piéton)",
+        desc: "Adieu le Queens. Tu vas scier Manhattan en deux, du Nord au Sud.",
+        points: [
+            { 
+                time: "08:30", type: "Petit-Déj", location: "Street Cart local", 
+                desc: "Café et muffin près de Columbus Circle.", coords: [40.7681, -73.9819],
+                longDesc: "Petit déjeuner typique et économique.",
+                photoTips: "Vendeur de rue préparant le café avec la fumée.",
+                shooting: { gear: "Fujifilm", recipe: "Kodak Portra 400 v2", advice: "Lumière matinale de rue." }
+            },
+            { 
+                time: "09:30", type: "Street Photo", location: "Columbus Circle", 
+                desc: "Flux tendu des navetteurs.", coords: [40.7681, -73.9819],
+                longDesc: "Intersection majeure.",
+                photoTips: "Interactions au centre près de la fontaine.",
+                shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "Formes graphiques et ombres." }
+            },
+            { 
+                time: "10:30", type: "Street Photo", location: "Times Square", 
+                desc: "Violente lumière diurne des écrans LED.", coords: [40.7580, -73.9855],
+                longDesc: "Le centre électrique du monde.",
+                photoTips: "Visages éclairés par les écrans.",
+                shooting: { gear: "Fujifilm", recipe: "CineStill 800T", advice: "Couleurs surréalistes." }
+            },
+            { 
+                time: "12:30", type: "Déjeuner", location: "Los Tacos No.1", 
+                desc: "Tacos d'exception au comptoir.", coords: [40.7570, -73.9875],
+                longDesc: "Énergie frénétique.",
+                photoTips: "Gestes rapides des taqueros.",
+                shooting: { gear: "Fujifilm", recipe: "Classic Cuban Negative", advice: "Tons chauds et vibrants." }
+            },
+            { 
+                time: "13:30", type: "Street Photo", location: "Garment District", 
+                desc: "Manutentionnaires du textile.", coords: [40.7510, -73.9890],
+                longDesc: "Le quartier de la mode historique.",
+                photoTips: "Contraste travail manuel / tourisme de masse.",
+                shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "Look industriel brut." }
+            },
+            { 
+                time: "15:30", type: "Street Photo", location: "SoHo", 
+                desc: "Superposition utilisant les vitrines.", coords: [40.7235, -73.9981],
+                longDesc: "Le cœur battant de SoHo.",
+                photoTips: "Mêlez mannequins en vitrine et passants réels.",
+                shooting: { gear: "Fujifilm", recipe: "Kodak Portra 400 v2", advice: "Rendu des teintes chair." }
+            },
+            { 
+                time: "17:30", type: "Street Photo", location: "TriBeCa", 
+                desc: "Lumière chaude sur brique industrielle.", coords: [40.7180, -74.0070],
+                longDesc: "Triangle Below Canal Street.",
+                photoTips: "Lumière rasante sur les pavés.",
+                shooting: { gear: "Fujifilm", recipe: "Classic Cuban Negative", advice: "Chaleur des briques." }
+            },
+            { 
+                time: "19:30", type: "Dîner", location: "Nish Nush", 
+                desc: "Excellente enseigne de falafels.", coords: [40.7155, -74.0075],
+                longDesc: "Repas qualitatif et abordable.",
+                photoTips: "Ambiance détendue du soir.",
+                shooting: { gear: "Fujifilm", recipe: "CineStill 800T", advice: "Lumière artificielle chaude." }
+            },
+            { 
+                time: "21:00", type: "Retour", location: "Lignes 1 ou 2/3", 
+                desc: "Remontée vers l'UWS après la marche.", coords: [40.7170, -74.0090],
+                longDesc: "La fatigue de la journée.",
+                photoTips: "Silhouettes dans les couloirs.",
+                shooting: { gear: "Fujifilm", recipe: "Kodak Tri-X 400", advice: "N&B contrasté pour conclure." }
+            }
+        ]
+    },
+    {
+        day: 6, date: "Jeudi 30 Avril", title: "Fer Forgé et Néons Cyberpunk",
+        desc: "Contraste : l'architecture intemporelle le matin et le néon la nuit.",
+        points: [
+            { 
+                time: "09:00", type: "Petit-Déj", location: "Market On Prince", 
+                desc: "Bacon, Egg & Cheese authentique.", coords: [40.7265, -74.0020],
+                longDesc: "Le rituel matinal immuable.",
+                photoTips: "Buée sur les vitrines.",
+                shooting: { gear: "Fujifilm", recipe: "Kodak Portra 400 v2", advice: "Ambiance matinale authentique." }
+            },
+            { 
+                time: "10:00", type: "Street Photo", location: "Lower Manhattan", 
+                desc: "Lumière matinale percutant la brique.", coords: [40.7245, -74.0000],
+                longDesc: "Rues historiques (Mercer, Greene).",
+                photoTips: "Alignement des colonnes en fonte.",
+                shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "Force graphique du fer forgé." }
+            },
+            { 
+                time: "12:30", type: "Street Photo", location: "Washington Sq", 
+                desc: "Chaos harmonieux (musiciens, échecs).", coords: [40.7308, -73.9973],
+                longDesc: "Épicentre culturel de la basse ville.",
+                photoTips: "Encadrez avec l'arche majestueuse.",
+                shooting: { gear: "Fujifilm", recipe: "Classic Cuban Negative", advice: "Énergie vibrante du parc." }
+            },
+            { 
+                time: "13:30", type: "Déjeuner", location: "Mamoun's Falafel", 
+                desc: "Pita falafel historique.", coords: [40.7300, -74.0006],
+                longDesc: "Le plus vieux stand de falafels du Village.",
+                photoTips: "File d'attente sur le trottoir.",
+                shooting: { gear: "Fujifilm", recipe: "Kodak Portra 400 v2", advice: "Ambiance chaleureuse." }
+            },
+            { 
+                time: "14:30", type: "Transit", location: "Lignes M ou J", 
+                desc: "Vers Brooklyn (Marcy Ave).", coords: [40.7060, -73.9550],
+                longDesc: "Traversée de l'East River.",
+                photoTips: "Structures métalliques du pont.",
+                shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "Esthétique ferroviaire." }
+            },
+            { 
+                time: "16:00", type: "Street Photo", location: "South Williamsburg", 
+                desc: "Superposition de plans (sans intrusion).", coords: [40.7029, -73.9577],
+                longDesc: "Approche documentaire stricte.",
+                photoTips: "Superpositions graphiques, discrétion totale.",
+                shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "Graphisme et ombres fortes." }
+            },
+            { 
+                time: "18:30", type: "Dîner", location: "Gottlieb's", 
+                desc: "Héritage ashkénaze, plats traditionnels.", coords: [40.7107, -73.9577],
+                longDesc: "Immersion totale.",
+                photoTips: "Portraits candides des habitués.",
+                shooting: { gear: "Fujifilm", recipe: "Classic Cuban Negative", advice: "Tons chauds du décor vintage." }
+            },
+            { 
+                time: "20:00", type: "Street Photo", location: "Koreatown", 
+                desc: "Néons style Cyberpunk, 32nd St.", coords: [40.7477, -73.9869],
+                longDesc: "Tranchée de néons de K-Town.",
+                photoTips: "Reflets des néons sur le sol.",
+                shooting: { gear: "Fujifilm", recipe: "CineStill 800T", advice: "Rouges et bleus des néons vont exploser." }
+            }
+        ]
+    },
+    {
+        day: 7, date: "Vendredi 1er Mai", title: "L'Axe Ouest (Flânerie Continue)",
+        desc: "Tu glisses doucement vers le sud-ouest en ne faisant que marcher.",
+        points: [
+            { 
+                time: "09:00", type: "Petit-Déj", location: "S&P Sandwich Shop", 
+                desc: "Comptoir à l'ancienne.", coords: [40.7410, -73.9895],
+                longDesc: "Démarrage typiquement américain.",
+                photoTips: "Portraits candides au comptoir.",
+                shooting: { gear: "Fujifilm", recipe: "Kodak Portra 400 v2", advice: "Tons beiges et lumière douce." }
+            },
+            { 
+                time: "10:00", type: "Street Photo", location: "Flatiron / Madison", 
+                desc: "Mouvement généré par vents croisés.", coords: [40.7411, -73.9897],
+                longDesc: "Architecture trapézoïdale.",
+                photoTips: "Cherchez l'humour visuel avec le vent.",
+                shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "Souligne le mouvement et l'humour." }
+            },
+            { 
+                time: "12:00", type: "Street Photo", location: "Chelsea", 
+                desc: "Descente lente via 8e ou 9e Ave.", coords: [40.7465, -74.0014],
+                longDesc: "Observation des galeries d'art.",
+                photoTips: "Public pointu devant les galeries.",
+                shooting: { gear: "Fujifilm", recipe: "Classic Cuban Negative", advice: "Couleurs sophistiquées." }
+            },
+            { 
+                time: "13:30", type: "Déjeuner", location: "Joe's Pizza", 
+                desc: "La slice dégustée debout.", coords: [40.7306, -74.0021],
+                longDesc: "La pizza new-yorkaise ultime.",
+                photoTips: "Le geste iconique du pliage.",
+                shooting: { gear: "Fujifilm", recipe: "Kodak Portra 400 v2", advice: "Rouges vibrants de la sauce." }
+            },
+            { 
+                time: "14:30", type: "Street Photo", location: "West Village", 
+                desc: "Ombres portées végétales.", coords: [40.7358, -74.0036],
+                longDesc: "Exploration du labyrinthe urbain sans grille.",
+                photoTips: "Jeux d'ombres sur briques.",
+                shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "Texture des pavés et ombres." }
+            },
+            { 
+                time: "17:00", type: "Événement Art", location: "Whitney Museum", 
+                desc: "Interaction absurde entre visiteurs et art.", coords: [40.7396, -74.0089],
+                longDesc: "Meatpacking District.",
+                photoTips: "Jouez avec l'interaction des visiteurs face aux œuvres.",
+                shooting: { gear: "Fujifilm", recipe: "Classic Cuban Negative", advice: "Couleurs vives de l'art." }
+            },
+            { 
+                time: "20:30", type: "Dîner", location: "Corner Bistro", 
+                desc: "Hamburger ou Grilled Cheese.", coords: [40.7378, -74.0038],
+                longDesc: "Plongée dans l'histoire des pubs.",
+                photoTips: "Travaillez en basse lumière.",
+                shooting: { gear: "Fujifilm", recipe: "CineStill 800T", advice: "Sources lumineuses isolées." }
+            },
+            { 
+                time: "21:30", type: "Street Photo", location: "Meatpacking", 
+                desc: "Contraste luxe nocturne / abattoirs bruts.", coords: [40.7405, -74.0076],
+                longDesc: "Photographie sur pavés au flash.",
+                photoTips: "Contraste tenues de soirée et briques.",
+                shooting: { gear: "Fujifilm", recipe: "CineStill 800T", advice: "Halation sur les néons des clubs." }
+            }
+        ]
+    },
+    {
+        day: 8, date: "Samedi 2 Mai", title: "Le Cœur Ouvrier et le Départ",
+        desc: "On remplace par le Garment District et Hudson Yards, à portée de tes bagages.",
+        points: [
+            { 
+                time: "08:30", type: "Logistique", location: "HI NYC -> Penn St", 
+                desc: "Check-out. Métro avec bagages.", coords: [40.7505, -73.9934],
+                longDesc: "Le dernier trajet dans le métro avec les bagages.",
+                photoTips: "Accumulation de bagages dans le wagon.",
+                shooting: { gear: "Fujifilm", recipe: "Kodak Portra 400 v2", advice: "Tons naturels de transition." }
+            },
+            { 
+                time: "09:15", type: "Consigne", location: "Dépôt près de Penn", 
+                desc: "Sécurisation matérielle des bagages.", coords: [40.7510, -73.9930],
+                longDesc: "Pour conserver une liberté de mouvement absolue.",
+                photoTips: "Boutique de quartier typique.",
+                shooting: { gear: "Fujifilm", recipe: "Classic Cuban Negative", advice: "Côté bazar saturé." }
+            },
+            { 
+                time: "09:30", type: "Petit-Déj", location: "Best Bagel & Coffee", 
+                desc: "Repas matinal près des quais.", coords: [40.7518, -73.9915],
+                longDesc: "Bagel traditionnel de qualité supérieure.",
+                photoTips: "Capturez la préparation matinale.",
+                shooting: { gear: "Fujifilm", recipe: "Kodak Portra 400 v2", advice: "Couleurs du matin." }
+            },
+            { 
+                time: "10:15", type: "Street Photo", location: "Garment District", 
+                desc: "Documentation du NY laborieux : panaches de vapeur.", coords: [40.7535, -73.9910],
+                longDesc: "Ouest de la 34e à la 42e rue.",
+                photoTips: "Cherchez la vapeur sortant du sol.",
+                shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "Look industriel brut." }
+            },
+            { 
+                time: "11:30", type: "Architecture", location: "Hudson Yards", 
+                desc: "Choc des époques, reflets froids.", coords: [40.7540, -74.0010],
+                longDesc: "Photographie centrée sur le verre poli.",
+                photoTips: "Reflets du ciel sur les baies vitrées.",
+                shooting: { gear: "P&S Film", recipe: "N&B 400 (Mono)", advice: "Minimalisme architectural." }
+            },
+            { 
+                time: "13:30", type: "Déjeuner", location: "Tick Tock Diner", 
+                desc: "Grand diner art-déco bruyant.", coords: [40.7523, -73.9933],
+                longDesc: "Repas final roboratif.",
+                photoTips: "Reflets sur le toit en inox et les banquettes.",
+                shooting: { gear: "Fujifilm", recipe: "CineStill 800T", advice: "Chrome et néons vont briller." }
+            },
+            { 
+                time: "15:00", type: "Logistique", location: "Penn Station Area", 
+                desc: "Récupération paisible des valises.", coords: [40.7505, -73.9934],
+                longDesc: "Rangement sécurisé de l'équipement.",
+                photoTips: "Silhouettes devant les panneaux.",
+                shooting: { gear: "Fujifilm", recipe: "CineStill 800T", advice: "Lumière tungstène de gare." }
+            },
+            { 
+                time: "16:00", type: "Transit", location: "NJ Transit", 
+                desc: "Direction aéroport EWR.", coords: [40.7505, -73.9934],
+                longDesc: "Dernier trajet en train.",
+                photoTips: "Paysages industriels du New Jersey.",
+                shooting: { gear: "Fujifilm", recipe: "Kodak Tri-X 400", advice: "Flou de bougé pour le départ." }
+            },
+            { 
+                time: "17:00", type: "Départ", location: "Aéroport EWR", 
+                desc: "Dépôt bagages, vol à 20h25.", coords: [40.6895, -74.1745],
+                longDesc: "Passage serein des filtres.",
+                photoTips: "Reflets des avions.",
+                shooting: { gear: "Fujifilm", recipe: "Kodak Tri-X 400", advice: "Adieu poétique en N&B." }
+            }
+        ]
+    }
+];
 
         // --- GLOBAL VARIABLES ---
         let map;
@@ -1467,14 +1481,14 @@
             { id: 't_aller', cat: 'airplane', color: 'blue-400', name: 'Transport: Aéroport EWR (Aller)', planned: 23.75, actual: null },
             { id: 't_omny', cat: 'train', color: 'blue-400', name: 'Transport: Pass OMNY 7 Jours', planned: 34.00, actual: null },
             { id: 't_retour', cat: 'airplane-takeoff', color: 'blue-400', name: 'Transport: Trajets J8 & Retour EWR', planned: 32.45, actual: null },
-            { id: 'f_j1', cat: 'pizza', color: 'orange-400', name: 'J1 Repas: Taqueria y Fonda', planned: 13.00, actual: null },
-            { id: 'f_j2', cat: 'pizza', color: 'orange-400', name: 'J2 Repas: Zucker\'s, Smorgas, F&F', planned: 36.00, actual: null },
-            { id: 'f_j3', cat: 'pizza', color: 'orange-400', name: 'J3 Repas: John\'s, Dumpling, Halal', planned: 34.00, actual: null },
-            { id: 'f_j4', cat: 'pizza', color: 'orange-400', name: 'J4 Repas: Gray\'s, Empanada Mama', planned: 34.00, actual: null },
-            { id: 'f_j5', cat: 'pizza', color: 'orange-400', name: 'J5 Repas: Daily Prov, 2 Bros, Birria', planned: 30.00, actual: null },
-            { id: 'f_j6', cat: 'pizza', color: 'orange-400', name: 'J6 Repas: Deli, Mamoun\'s, Gottlieb\'s', planned: 40.00, actual: null },
-            { id: 'f_j7', cat: 'pizza', color: 'orange-400', name: 'J7 Repas: Amy Ruth\'s, Burger', planned: 53.00, actual: null },
-            { id: 'f_j8', cat: 'pizza', color: 'orange-400', name: 'J8 Repas: Nathan\'s Famous', planned: 23.00, actual: null },
+            { id: 'f_j1', cat: 'pizza', color: 'orange-400', name: "J1 Repas: 2 Bros Pizza", planned: 5.00, actual: null },
+            { id: 'f_j2', cat: 'pizza', color: 'orange-400', name: "J2 Repas: Zucker's, Smorgas, F&F", planned: 38.00, actual: null },
+            { id: 'f_j3', cat: 'pizza', color: 'orange-400', name: "J3 Repas: Kopitiam, Dumpling, Halal", planned: 30.00, actual: null },
+            { id: 'f_j4', cat: 'pizza', color: 'orange-400', name: "J4 Repas: Nosh, Gray's, Empanada", planned: 35.00, actual: null },
+            { id: 'f_j5', cat: 'pizza', color: 'orange-400', name: "J5 Repas: Cart, Los Tacos, Nish Nush", planned: 35.00, actual: null },
+            { id: 'f_j6', cat: 'pizza', color: 'orange-400', name: "J6 Repas: Market, Mamoun's, Gottlieb's", planned: 26.00, actual: null },
+            { id: 'f_j7', cat: 'pizza', color: 'orange-400', name: "J7 Repas: S&P, Joe's, Corner Bistro", planned: 30.00, actual: null },
+            { id: 'f_j8', cat: 'pizza', color: 'orange-400', name: "J8 Repas: Best Bagel, Tick Tock Diner", planned: 35.00, actual: null },
             { id: 'f_marge', cat: 'coffee', color: 'orange-400', name: 'Marge Nourriture: Snacks & Cafés', planned: 40.00, actual: null },
             { id: 'l_consigne', cat: 'backpack', color: 'emerald-400', name: 'Logistique: Consigne Bagages J8', planned: 10.00, actual: null },
             { id: 'l_cash', cat: 'lifebuoy', color: 'pink-400', name: 'Imprévus: Cash de Sécurité', planned: 20.00, actual: null }
